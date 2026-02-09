@@ -1,0 +1,150 @@
+═══════════════════════════════════════════════════════════════
+   NÁVOD NA NASTAVENIE EMAILOVÝCH NOTIFIKÁCIÍ
+   Pre aplikáciu: Checklist pre zamestnancov
+═══════════════════════════════════════════════════════════════
+
+📧 KROK 1: Registrácia na EmailJS (ZADARMO)
+═══════════════════════════════════════════════════════════════
+
+1. Otvorte prehliadač a choďte na: https://www.emailjs.com/
+2. Kliknite na "Sign Up" (Registrácia)
+3. Registrujte sa pomocou Google účtu alebo emailu
+4. Potvrďte email (ak je potrebné)
+
+
+📨 KROK 2: Pripojenie vášho emailového účtu
+═══════════════════════════════════════════════════════════════
+
+1. Po prihlásení choďte na "Email Services" v ľavom menu
+2. Kliknite "Add New Service"
+3. Vyberte si email službu (odporúčam Gmail):
+   
+   Pre Gmail:
+   - Kliknite na "Gmail"
+   - Kliknite "Connect Account"
+   - Prihláste sa do vášho Gmail účtu
+   - Povoľte prístup EmailJS
+
+4. Po pripojení sa zobrazí Service ID (napr. "service_abc1234")
+   ⚠️ SKOPÍRUJTE SI HO - budete ho potrebovať!
+
+
+📝 KROK 3: Vytvorenie email šablóny
+═══════════════════════════════════════════════════════════════
+
+1. Choďte na "Email Templates" v ľavom menu
+2. Kliknite "Create New Template"
+3. Do šablóny skopírujte tento text:
+
+   ─────────────────────────────────────────────────────────────
+   Subject (Predmet):
+   ─────────────────────────────────────────────────────────────
+   [PROTOKOL] Checklist od {{meno_priezvisko}} - {{nazov_akcie}}
+
+   ─────────────────────────────────────────────────────────────
+   Content (Obsah):
+   ─────────────────────────────────────────────────────────────
+   🎪 PROTOKOL PRÍPRAVY ATRAKCIE
+   ═══════════════════════════════════════════════════════════
+
+   📅 Dátum: {{datum}}
+   🎯 Akcia: {{nazov_akcie}}
+   👤 Zodpovedný: {{meno_priezvisko}}
+   ⏰ Čas odoslania: {{cas_odoslania}}
+
+   ───────────────────────────────────────────────────────────
+   📋 KONTROLNÝ ZOZNAM:
+   ───────────────────────────────────────────────────────────
+
+   {{checklist}}
+
+   ───────────────────────────────────────────────────────────
+   
+   Tento protokol bol automaticky odoslaný z aplikácie Checklist.
+   
+   ═══════════════════════════════════════════════════════════
+
+4. Kliknite "Save"
+5. Skopírujte si Template ID (napr. "template_xyz5678")
+   ⚠️ POZNAMENAJTE SI HO!
+
+
+🔑 KROK 4: Získanie Public Key
+═══════════════════════════════════════════════════════════════
+
+1. Choďte na "Account" v ľavom menu
+2. Vyberte "General" (alebo "API Keys")
+3. Nájdite "Public Key" (napr. "aBcD1234eFgH5678")
+   ⚠️ SKOPÍRUJTE SI HO!
+
+
+⚙️ KROK 5: Vloženie kódov do aplikácie
+═══════════════════════════════════════════════════════════════
+
+1. Otvorte súbor: checklist-zamestnanci.html
+2. Nájdite túto časť (hneď za <!-- EmailJS SDK -->):
+
+   const EMAIL_CONFIG = {
+       serviceId: 'VÁŠ_SERVICE_ID',
+       templateId: 'VÁŠ_TEMPLATE_ID',
+       publicKey: 'VÁŠ_PUBLIC_KEY'
+   };
+
+3. Nahraďte hodnoty:
+   
+   serviceId: 'service_abc1234'    ← váš Service ID z kroku 2
+   templateId: 'template_xyz5678'  ← váš Template ID z kroku 3
+   publicKey: 'aBcD1234eFgH5678'   ← váš Public Key z kroku 4
+
+4. Uložte súbor (Cmd + S)
+
+
+✅ KROK 6: Testovanie
+═══════════════════════════════════════════════════════════════
+
+1. Otvorte súbor checklist-zamestnanci.html v prehliadači
+2. Vyplňte formulár
+3. Kliknite "ODOSLAŤ PROTOKOL"
+4. Email by mal prísť do pár sekúnd!
+
+⚠️ Ak email nepríde, skontrolujte:
+   - SPAM priečinok
+   - Či ste správne skopírovali všetky tri kódy
+   - Konzolu prehliadača (F12) pre chybové hlášky
+
+
+📧 KROK 7: Nastavenie prijímateľa (kam majú chodiť emaily)
+═══════════════════════════════════════════════════════════════
+
+EmailJS v BEZPLATNEJ verzii posiela emaily na účet, ktorý ste 
+pripojili v KROKU 2. 
+
+Ak chcete posielať emaily na iný email:
+
+1. Choďte do EmailJS na "Email Templates"
+2. Upravte vašu šablónu
+3. V hornej časti nájdite "Send To"
+4. Zadajte email adresu, kam chcete dostávať protokoly
+   (alebo použite viacero emailov oddelených čiarkou)
+
+
+═══════════════════════════════════════════════════════════════
+🎯 HOTOVO! Teraz budete dostávať email po každom odoslaní!
+═══════════════════════════════════════════════════════════════
+
+💡 TIPY:
+   - Bezplatný účet na EmailJS má limit 200 emailov/mesiac
+   - Pre viac emailov si môžete zakúpiť prémiový plán
+   - Emaily prichádzajú okamžite (do pár sekúnd)
+
+
+❓ PROBLÉMY?
+   - Skontrolujte, či sú všetky tri kódy správne vložené
+   - Otvorte konzolu (F12) a pozrite sa na chyby
+   - Overte, že máte pripojenie na internet
+   - Skontrolujte SPAM priečinok
+
+
+📞 KONTAKT: info@emailjs.com (podpora EmailJS)
+
+═══════════════════════════════════════════════════════════════
