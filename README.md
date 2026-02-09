@@ -2,6 +2,12 @@
 
 Webová aplikácia pre správu checklist-u zamestnancov s automatickým zasielaním emailov cez Google Apps Script.
 
+## 🌐 Živá aplikácia
+
+**👉 [Otvoriť checklist aplikáciu](https://stsmolko.github.io/zabavka-checklisty/checklist-zamestnanci.html) 👈**
+
+> Aplikácia je dostupná online a môžete ju zdieľať so zamestnancami.
+
 ## 🎯 Funkcie
 
 - ✅ Interaktívny checklist s kategóriami úloh
