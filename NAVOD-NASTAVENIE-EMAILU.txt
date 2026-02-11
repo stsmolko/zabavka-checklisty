@@ -3,14 +3,7 @@
    Pre aplikáciu: Checklist pre zamestnancov
 ═══════════════════════════════════════════════════════════════
 
-📧 KROK 1: Registrácia na EmailJS (ZADARMO)
 ═══════════════════════════════════════════════════════════════
-
-1. Otvorte prehliadač a choďte na: https://www.emailjs.com/
-2. Kliknite na "Sign Up" (Registrácia)
-3. Registrujte sa pomocou Google účtu alebo emailu
-4. Potvrďte email (ak je potrebné)
-
 
 📨 KROK 2: Pripojenie vášho emailového účtu
 ═══════════════════════════════════════════════════════════════

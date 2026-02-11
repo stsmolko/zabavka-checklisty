@@ -8,14 +8,7 @@ Webová aplikácia pre správu checklist-u zamestnancov s automatickým zasielan
 
 > Aplikácia je dostupná online a môžete ju zdieľať so zamestnancami.
 
-## 🎯 Funkcie
 
-- ✅ Interaktívny checklist s kategóriami úloh
-- 📧 Automatické zasielanie emailov pri dokončení checklistu
-- 💾 Ukladanie dát do Google Sheets
-- 🎨 Moderný dizajn s Zábavka branding farbami
-- 📱 Responzívne rozloženie pre mobilné zariadenia
-- ⚡ Real-time validácia formulára
 
 ## 📁 Štruktúra projektu
 
