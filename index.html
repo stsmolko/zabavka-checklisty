@@ -207,6 +207,97 @@
             accent-color: #000;
         }
 
+        /* Špeciálne štýly pre sekciu KONTROLA ŠOFÉR */
+        .checklist-section.sofer-section {
+            border: 3px solid #f39c12;
+        }
+
+        .checklist-section.sofer-section .checklist-title {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .checklist-section.sofer-section .checkbox-item:hover {
+            border-color: #f39c12;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .checklist-section.sofer-section .checkbox-item input[type="checkbox"] {
+            accent-color: #f39c12;
+        }
+
+        /* Špeciálne štýly pre sekciu RODINNÉ OSLAVY */
+        .checklist-section.oslavy-section {
+            border: 3px solid #f39c12;
+        }
+
+        .checklist-section.oslavy-section .checklist-title {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .checklist-section.oslavy-section .checkbox-item:hover {
+            border-color: #f39c12;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .checklist-section.oslavy-section .checkbox-item input[type="checkbox"] {
+            accent-color: #f39c12;
+        }
+
+        /* Špeciálne štýly pre sekciu POKLADŇA */
+        .checklist-section.pokladna-section {
+            border: 3px solid #e74c3c;
+        }
+
+        .checklist-section.pokladna-section .checklist-title {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .checklist-section.pokladna-section .checkbox-item:hover {
+            border-color: #e74c3c;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .checklist-section.pokladna-section .checkbox-item input[type="checkbox"] {
+            accent-color: #e74c3c;
+        }
+
+        /* Špeciálne štýly pre sekciu MASKOTI */
+        .checklist-section.maskoti-section {
+            border: 3px solid #9b59b6;
+        }
+
+        .checklist-section.maskoti-section .checklist-title {
+            background: #9b59b6;
+            color: #fff;
+        }
+
+        .checklist-section.maskoti-section .checkbox-item:hover {
+            border-color: #9b59b6;
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+        }
+
+        .checklist-section.maskoti-section .checkbox-item input[type="checkbox"] {
+            accent-color: #9b59b6;
+        }
+
+        /* Špeciálne štýly pre textové polia po sekcii MASKOTI */
+        .form-group.special-input input[type="text"] {
+            border: 3px solid #607d8b;
+            background: #f5f5f5;
+        }
+
+        .form-group.special-input input[type="text"]:focus {
+            border-color: #455a64;
+            box-shadow: 0 0 10px rgba(96, 125, 139, 0.5);
+        }
+
+        .form-group.special-input label {
+            color: #455a64;
+        }
+
         .submit-button {
             width: 100%;
             padding: 20px;
@@ -537,7 +628,7 @@
                 </div>
             </div>
 
-            <div class="checklist-section">
+            <div class="checklist-section sofer-section">
                 <div class="checklist-title">Kontrola šofér (povinné, ak jazdíš na aute)</div>
 
                 <div class="checkbox-item">
@@ -571,7 +662,7 @@
                 </div>
             </div>
 
-            <div class="checklist-section">
+            <div class="checklist-section oslavy-section">
                 <div class="checklist-title">Rodinné oslavy (vypisuje šofér)</div>
 
                 <div class="checkbox-item">
@@ -595,7 +686,7 @@
                 </div>
             </div>
 
-            <div class="checklist-section">
+            <div class="checklist-section pokladna-section">
                 <div class="checklist-title">Pokladňa (len pri výbere vstupného, vypisuje pokladník )</div>
 
                 <div class="checkbox-item">
@@ -634,7 +725,71 @@
                 </div>
             </div>
 
-            <div class="form-group">
+            <div class="checklist-section maskoti-section">
+                <div class="checklist-title">Maskoti (vypisuje len človek v maskotovi)</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot1" name="maskot1">
+                    <label for="maskot1">Jeden človek si oblieka len jeden kostým kvôli hygiene</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot2" name="maskot2">
+                    <label for="maskot2">Žiaden makeup</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot3" name="maskot3">
+                    <label for="maskot3">Nechodím bez hlavy. Hlavu si dávam dole až v šatni</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot4" name="maskot4">
+                    <label for="maskot4">V maskotovi kývem, tancujem, dávam ťap, objímam sa...</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot5" name="maskot5">
+                    <label for="maskot5">Nikdy nedvíham deti na ruky</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot6" name="maskot6">
+                    <label for="maskot6">Neber veci do ruky napr. torty atd.</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot7" name="maskot7">
+                    <label for="maskot7">V maskotovi nerozprávam</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot8" name="maskot8">
+                    <label for="maskot8">Neválam sa po zemi</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot9" name="maskot9">
+                    <label for="maskot9">Striedam sa 20 min idem a 10 min mám pauzu</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot10" name="maskot10">
+                    <label for="maskot10">Ak ste viac na akcii viacerí nemáte nikdy spolu prestávky stále musí byť aspoň jeden vonku</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot11" name="maskot11">
+                    <label for="maskot11">Topánky po akcii dám do čierneho sáčku až tak ho dám do mechu</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot12" name="maskot12">
+                    <label for="maskot12">Skontroloval som, či mám všetky časti maskota</label>
+                </div>
+            </div>
+
+            <div class="form-group special-input">
                 <label for="objednavkaTricko">Sem napíš svoje meno, priezvisko a veľkosť, ak si ešte nedostal tričko zabavka alebo ti dochádzajú/ sú v zlom stave:</label>
                 <input type="text" id="objednavkaTricko" name="objednavkaTricko" placeholder="Napr. Ján Novák, veľkosť L (nepovinné)">
             </div>
@@ -643,22 +798,22 @@
                 Vypisuješ len ak nemáš zabavka apku ⬇
             </p>
 
-            <div class="form-group">
+            <div class="form-group special-input">
                 <label for="servisDodavky">Chcem nahlásiť servis dodávky:</label>
                 <input type="text" id="servisDodavky" name="servisDodavky" placeholder="Popíšte problém s dodávkou (nepovinné)">
             </div>
 
-            <div class="form-group">
+            <div class="form-group special-input">
                 <label for="servisAtrakcie">Chcem nahlásiť servis atrakcie:</label>
                 <input type="text" id="servisAtrakcie" name="servisAtrakcie" placeholder="Popíšte problém s atrakciou (nepovinné)">
             </div>
 
-            <div class="form-group">
+            <div class="form-group special-input">
                 <label for="cistenieAtrakcie">Chcem nahlásiť čistenie atrakcie:</label>
                 <input type="text" id="cistenieAtrakcie" name="cistenieAtrakcie" placeholder="Popíšte potrebu čistenia (nepovinné)">
             </div>
 
-            <div class="form-group">
+            <div class="form-group special-input">
                 <label for="spravaPreSefku">Máš ešte niečo na srdci, čo by si chcel povedať šéfkovi tj. návrhy na zlepšenie, nápady, sťažnosti...</label>
                 <input type="text" id="spravaPreSefku" name="spravaPreSefku" placeholder="Napíš čokoľvek, čo máš na srdci (nepovinné)">
             </div>
@@ -786,6 +941,22 @@
                 { text: 'Všetky deti/ dospelí, ktorí využívajú atrakcie majú na ruke pásku/ žetóny', checked: document.getElementById('pokladna7').checked }
             ];
 
+            // Formátovanie maskotov
+            const maskotItems = [
+                { text: 'Jeden človek si oblieka len jeden kostým kvôli hygiene', checked: document.getElementById('maskot1').checked },
+                { text: 'Žiaden makeup', checked: document.getElementById('maskot2').checked },
+                { text: 'Nechodím bez hlavy. Hlavu si dávam dole až v šatni', checked: document.getElementById('maskot3').checked },
+                { text: 'V maskotovi kývem, tancujem, dávam ťap, objímam sa...', checked: document.getElementById('maskot4').checked },
+                { text: 'Nikdy nedvíham deti na ruky', checked: document.getElementById('maskot5').checked },
+                { text: 'Neber veci do ruky napr. torty atd.', checked: document.getElementById('maskot6').checked },
+                { text: 'V maskotovi nerozprávam', checked: document.getElementById('maskot7').checked },
+                { text: 'Neválam sa po zemi', checked: document.getElementById('maskot8').checked },
+                { text: 'Striedam sa 20 min idem a 10 min mám pauzu', checked: document.getElementById('maskot9').checked },
+                { text: 'Ak ste viac na akcii viacerí nemáte nikdy spolu prestávky stále musí byť aspoň jeden vonku', checked: document.getElementById('maskot10').checked },
+                { text: 'Topánky po akcii dám do čierneho sáčku až tak ho dám do mechu', checked: document.getElementById('maskot11').checked },
+                { text: 'Skontroloval som, či mám všetky časti maskota', checked: document.getElementById('maskot12').checked }
+            ];
+
             // Vytvorenie prehľadného zoznamu pre email
             let checklistHtml = '';
             checklistItems.forEach(item => {
@@ -817,6 +988,12 @@
                 pokladnaHtml += `${icon} ${item.text}\n`;
             });
 
+            let maskotHtml = '';
+            maskotItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                maskotHtml += `${icon} ${item.text}\n`;
+            });
+
             // Parametre pre Google Sheets
             const formData = {
                 datum: datum,
@@ -830,6 +1007,7 @@
                 sofer: soferHtml,
                 rodinne_oslavy: oslavaHtml,
                 pokladna: pokladnaHtml,
+                maskoti: maskotHtml,
                 objednavka_tricko: objednavkaTricko,
                 servis_dodavky: servisDodavky,
                 servis_atrakcie: servisAtrakcie,
