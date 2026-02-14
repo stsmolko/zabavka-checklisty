@@ -1044,12 +1044,15 @@
                     // no-cors mode nevráti odpoveď, takže predpokladáme úspech
                     console.log('Dáta odoslané do Google Sheets');
                     
-                    // Zobrazenie úspešnej správy
-                    successMessage.style.display = 'block';
-                    submitButton.classList.remove('loading');
-                    submitButton.innerHTML = '📋 Odoslať protokol';
+                    // Počkaj 3 sekundy aby sa email stihol odoslať
+                    setTimeout(() => {
+                        // Zobrazenie úspešnej správy
+                        successMessage.style.display = 'block';
+                        submitButton.classList.remove('loading');
+                        submitButton.innerHTML = '📋 Odoslať protokol';
+                    }, 3000);
 
-                    // Reset formulára po 10 sekundách
+                    // Reset formulára po 13 sekundách (3s čakanie + 10s zobrazenie)
                     setTimeout(() => {
                         successMessage.style.display = 'none';
                         // Vyčistenie formulára
@@ -1066,7 +1069,7 @@
                         // Znovu nastaviť dnešný dátum
                         const today = new Date();
                         document.getElementById('datum').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                    }, 10000);
+                    }, 13000);
                 })
                 .catch(function(error) {
                     console.error('Chyba pri odosielaní:', error);
