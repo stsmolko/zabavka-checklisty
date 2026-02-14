@@ -875,7 +875,16 @@
             submitButton.innerHTML = '📋 Odosielam...<span class="spinner"></span>';
 
             // Získanie dát z formulára
-            const datum = document.getElementById('datum').value;
+            const datumInput = document.getElementById('datum').value;
+            
+            // Preformátovanie dátumu z YYYY-MM-DD na DD.MM.YYYY
+            const datumParts = datumInput.split('-');
+            const datum = `${datumParts[2]}.${datumParts[1]}.${datumParts[0]}`;
+            
+            // Získanie len času (HH:MM:SS)
+            const now = new Date();
+            const casOdoslania = now.toLocaleTimeString('sk-SK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            
             const nazovAkcie = document.getElementById('nazovAkcie').value;
             const atrakcia = document.getElementById('atrakcia').value;
             const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
@@ -1002,6 +1011,7 @@
 
             // Parametre pre Google Sheets
             const formData = {
+                cas_odoslania: casOdoslania,
                 datum: datum,
                 nazov_akcie: nazovAkcie,
                 atrakcia: atrakcia,
@@ -1018,8 +1028,7 @@
                 servis_dodavky: servisDodavky,
                 servis_atrakcie: servisAtrakcie,
                 cistenie_atrakcie: cistenieAtrakcie,
-                sprava_pre_sefku: spravaPreSefku,
-                cas_odoslania: new Date().toLocaleTimeString('sk-SK')
+                sprava_pre_sefku: spravaPreSefku
             };
 
             // Odoslanie dát do Google Sheets
