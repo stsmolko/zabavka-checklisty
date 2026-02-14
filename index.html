@@ -82,6 +82,17 @@
             font-size: 1em;
             transition: all 0.3s ease;
             background: #fff;
+            text-align: left !important;
+            direction: ltr;
+        }
+
+        /* Extra pravidlo pre dátum na mobile */
+        input[type="date"] {
+            text-align: left !important;
+            direction: ltr;
+        }
+
+        input[type="date"]::-webkit-datetime-edit {
             text-align: left;
         }
 
