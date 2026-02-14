@@ -1453,7 +1453,7 @@
                         submitButton.innerHTML = '📋 Odoslať protokol';
                     }, 3000);
 
-                    // Reset formulára po 13 sekundách (3s čakanie + 10s zobrazenie)
+                    // Reset formulára po 23 sekundách (3s čakanie + 20s zobrazenie)
                     setTimeout(() => {
                         successMessage.style.display = 'none';
                         // Vyčistenie formulára
@@ -1471,7 +1471,7 @@
                         // Znovu nastaviť dnešný dátum
                         const today = new Date();
                         document.getElementById('datum').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                    }, 13000);
+                    }, 23000);
                 })
                 .catch(function(error) {
                     console.error('Chyba pri odosielaní:', error);
@@ -1481,10 +1481,10 @@
                     submitButton.classList.remove('loading');
                     submitButton.innerHTML = '📋 Odoslať protokol';
 
-                    // Skrytie chybovej správy po 10 sekundách
+                    // Skrytie chybovej správy po 20 sekundách
                     setTimeout(() => {
                         errorMessage.style.display = 'none';
-                    }, 10000);
+                    }, 20000);
                 });
         });
     </script>
