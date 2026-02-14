@@ -1,0 +1,1073 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: #333;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(190, 255, 0, 0.4);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #b4ff00 0%, #d4ff4e 100%);
+            padding: 30px;
+            text-align: center;
+            border-bottom: 5px solid #000;
+        }
+
+        .logo {
+            max-width: 200px;
+            height: auto;
+            margin-bottom: 15px;
+            filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.2));
+        }
+
+        .header h1 {
+            color: #000;
+            font-size: 2em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #333;
+            font-size: 1em;
+            font-weight: 500;
+        }
+
+        .form-section {
+            padding: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 8px;
+            font-size: 1.1em;
+        }
+
+        .form-group input[type="text"],
+        .form-group input[type="date"] {
+            width: 100%;
+            padding: 15px;
+            border: 3px solid #b4ff00;
+            border-radius: 10px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+            background: #fff;
+            text-align: left;
+        }
+
+        .form-group input[type="text"]:focus,
+        .form-group input[type="date"]:focus {
+            outline: none;
+            border-color: #000;
+            box-shadow: 0 0 10px rgba(180, 255, 0, 0.5);
+        }
+
+        .checklist-section {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 15px;
+            margin-bottom: 25px;
+            border: 3px solid #b4ff00;
+        }
+
+        .checklist-title {
+            font-size: 1.3em;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            text-align: center;
+            background: #b4ff00;
+            padding: 15px;
+            border-radius: 10px;
+        }
+
+        .checkbox-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            margin-bottom: 12px;
+            background: #fff;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .checkbox-item:hover {
+            border-color: #b4ff00;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(180, 255, 0, 0.3);
+        }
+
+        .checkbox-item input[type="checkbox"] {
+            width: 25px;
+            height: 25px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #b4ff00;
+        }
+
+        .checkbox-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 1.05em;
+            color: #333;
+            margin: 0;
+        }
+
+        .checkbox-item input[type="checkbox"]:checked + label {
+            text-decoration: line-through;
+            color: #999;
+        }
+
+        .radio-group {
+            margin-bottom: 25px;
+        }
+
+        .radio-group-label {
+            display: block;
+            font-weight: bold;
+            color: #000;
+            margin-bottom: 15px;
+            font-size: 1.1em;
+        }
+
+        .radio-options {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 15px;
+            border: 3px solid #b4ff00;
+        }
+
+        .radio-item {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            background: #fff;
+            border-radius: 10px;
+            border: 2px solid #e0e0e0;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .radio-item:hover {
+            border-color: #b4ff00;
+            transform: translateX(5px);
+            box-shadow: 0 5px 15px rgba(180, 255, 0, 0.3);
+        }
+
+        .radio-item input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            margin-right: 15px;
+            cursor: pointer;
+            accent-color: #b4ff00;
+        }
+
+        .radio-item label {
+            flex: 1;
+            cursor: pointer;
+            font-size: 1.05em;
+            color: #333;
+            margin: 0;
+        }
+
+        .radio-item input[type="radio"]:checked {
+            accent-color: #000;
+        }
+
+        /* Špeciálne štýly pre sekciu KONTROLA ŠOFÉR */
+        .checklist-section.sofer-section {
+            border: 3px solid #f39c12;
+        }
+
+        .checklist-section.sofer-section .checklist-title {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .checklist-section.sofer-section .checkbox-item:hover {
+            border-color: #f39c12;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .checklist-section.sofer-section .checkbox-item input[type="checkbox"] {
+            accent-color: #f39c12;
+        }
+
+        /* Špeciálne štýly pre sekciu RODINNÉ OSLAVY */
+        .checklist-section.oslavy-section {
+            border: 3px solid #f39c12;
+        }
+
+        .checklist-section.oslavy-section .checklist-title {
+            background: #f39c12;
+            color: #fff;
+        }
+
+        .checklist-section.oslavy-section .checkbox-item:hover {
+            border-color: #f39c12;
+            box-shadow: 0 5px 15px rgba(243, 156, 18, 0.3);
+        }
+
+        .checklist-section.oslavy-section .checkbox-item input[type="checkbox"] {
+            accent-color: #f39c12;
+        }
+
+        /* Špeciálne štýly pre sekciu POKLADŇA */
+        .checklist-section.pokladna-section {
+            border: 3px solid #e74c3c;
+        }
+
+        .checklist-section.pokladna-section .checklist-title {
+            background: #e74c3c;
+            color: #fff;
+        }
+
+        .checklist-section.pokladna-section .checkbox-item:hover {
+            border-color: #e74c3c;
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .checklist-section.pokladna-section .checkbox-item input[type="checkbox"] {
+            accent-color: #e74c3c;
+        }
+
+        /* Špeciálne štýly pre sekciu MASKOTI */
+        .checklist-section.maskoti-section {
+            border: 3px solid #9b59b6;
+        }
+
+        .checklist-section.maskoti-section .checklist-title {
+            background: #9b59b6;
+            color: #fff;
+        }
+
+        .checklist-section.maskoti-section .checkbox-item:hover {
+            border-color: #9b59b6;
+            box-shadow: 0 5px 15px rgba(155, 89, 182, 0.3);
+        }
+
+        .checklist-section.maskoti-section .checkbox-item input[type="checkbox"] {
+            accent-color: #9b59b6;
+        }
+
+        /* Špeciálne štýly pre textové polia po sekcii MASKOTI */
+        .form-group.special-input input[type="text"] {
+            border: 3px solid #607d8b;
+            background: #f5f5f5;
+        }
+
+        .form-group.special-input input[type="text"]:focus {
+            border-color: #455a64;
+            box-shadow: 0 0 10px rgba(96, 125, 139, 0.5);
+        }
+
+        .form-group.special-input label {
+            color: #455a64;
+        }
+
+        .submit-button {
+            width: 100%;
+            padding: 20px;
+            background: linear-gradient(135deg, #000 0%, #333 100%);
+            color: #b4ff00;
+            border: none;
+            border-radius: 15px;
+            font-size: 1.3em;
+            font-weight: bold;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.3);
+        }
+
+        .submit-button:hover {
+            background: linear-gradient(135deg, #b4ff00 0%, #d4ff4e 100%);
+            color: #000;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(180, 255, 0, 0.5);
+        }
+
+        .submit-button:active {
+            transform: translateY(0);
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .error-message {
+            display: none;
+            background: #f44336;
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 1.1em;
+        }
+
+        .loading {
+            pointer-events: none;
+            opacity: 0.6;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid #b4ff00;
+            border-top: 3px solid #000;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin-left: 10px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .container {
+                border-radius: 10px;
+            }
+
+            .logo {
+                max-width: 160px;
+            }
+
+            .header h1 {
+                font-size: 1.5em;
+            }
+
+            .form-section {
+                padding: 20px;
+            }
+
+            .submit-button {
+                font-size: 1.1em;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .header {
+                padding: 20px;
+            }
+
+            .logo {
+                max-width: 140px;
+            }
+
+            .header h1 {
+                font-size: 1.3em;
+                letter-spacing: 1px;
+            }
+
+            .form-section {
+                padding: 15px;
+            }
+
+            .checkbox-item {
+                padding: 12px;
+            }
+
+            .checkbox-item label {
+                font-size: 0.95em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <img src="zabavka-logo.png" alt="Zabavka.sk Logo" class="logo">
+            <h1>Checklist zamestnanca</h1>
+            <h2>Kontrola atrakcie</h2>
+        </div>
+    
+        <form id="checklistForm" class="form-section">
+            <div class="form-group">
+                <label for="datum">Dátum:</label>
+                <input type="date" id="datum" name="datum" required>
+            </div>
+
+            <div class="form-group">
+                <label for="nazovAkcie">Názov akcie/ Miesto konania akcie:</label>
+                <input type="text" id="nazovAkcie" name="nazovAkcie" placeholder="Zadajte názov akcie" required>
+            </div>
+
+            <div class="form-group">
+                <label for="atrakcia">Atrakcia, ktorú mám na starosti:</label>
+                <input type="text" id="atrakcia" name="atrakcia" placeholder="Zadajte atrakciu" required>
+            </div>
+
+            <div class="form-group">
+                <label for="menoAPriezvisko">Meno a priezvisko:</label>
+                <input type="text" id="menoAPriezvisko" name="menoAPriezvisko" placeholder="Zadajte vaše meno a priezvisko" required>
+            </div>
+
+            <div class="radio-group">
+                <label class="radio-group-label">Druh akcie:</label>
+                <div class="radio-options">
+                    <div class="radio-item">
+                        <input type="radio" id="rodinnaOslava" name="druhAkcie" value="Rodinná oslava" required>
+                        <label for="rodinnaOslava">Rodinná oslava</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="obecnaAkcia" name="druhAkcie" value="Obecná/mestská akcia">
+                        <label for="obecnaAkcia">Obecná/mestská akcia</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="firemnaAkcia" name="druhAkcie" value="Firemná akcia">
+                        <label for="firemnaAkcia">Firemná akcia</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="festival" name="druhAkcie" value="Festival">
+                        <label for="festival">Festival</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="charita" name="druhAkcie" value="Charita">
+                        <label for="charita">Charita</label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="ine" name="druhAkcie" value="Iné">
+                        <label for="ine">Iné</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="radio-group">
+                <label class="radio-group-label">Vyberáme si vstupné na akcii:</label>
+                <div class="radio-options">
+                    <div class="radio-item">
+                        <input type="radio" id="vstupneAno" name="vstupne" value="Áno" required>
+                        <label for="vstupneAno">Áno (vyplň checklist pokladna na konci) </label>
+                    </div>
+                    <div class="radio-item">
+                        <input type="radio" id="vstupneNie" name="vstupne" value="Nie">
+                        <label for="vstupneNie">Nie</label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <div class="checklist-title">Kontrola atrakcie</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check1" name="check1">
+                    <label for="check1"><b>Atrakcia je prikotvená k zemi </b>(závaží, žltými hákmi alebo inak ) !!!!!</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check2" name="check2">
+                    <label for="check2">Atrakcia má nalepený pri vchode <b>prevádzkový poriadok </b>, je tam napísaný počet detí, výška...</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check3" name="check3">
+                    <label for="check3">Pred atrakciou je pekne rovno <b>Zabavka koberček</b>, aby si tam deti dali topánky</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check4" name="check4">
+                    <label for="check4">Atrakciu som prešiel z vnútra a vyhádzal všetky odpadky</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check5" name="check5">
+                    <label for="check5"><b>Atrakcia nie je špinavá</b>(blato, ihličie, listy...) príp. vyčistil som ju v rámci možností (použi čistiacu sadu)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check6" name="check6">
+                    <label for="check6"><b>Predlžovačky sú celé roztočené </b> a mimo dosahu detí (na bubne nesmie ostať navinutý žiaden kábel!!!)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check7" name="check7">
+                    <label for="check7">Kábel ide poza atrakciu, ľudia o neho nezakopujú a vizuálne nie je "na jednej kope"</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check8" name="check8">
+                    <label for="check8">Za atrakciou je poskladaná celta na prekrytie v prípade dažďa</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check9" name="check9">
+                    <label for="check10">Fúkare sú rovno = nie sú spadnuté. Skontroloval som, že kompresor nevtiahol listky, odpadky...</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check10" name="check10">
+                    <label for="check9">Rukávy fúkarok  sú v poriadku a nezablokované - kompresory nič neblokuje</label>
+                </div>
+
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check11" name="check11">
+                    <label for="check11">Okolie atrakcie je upratané, nie sú tam pohádzané háky, kladivá... tie sú odložené v dodávke alebo za hradom pod celtou</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check12" name="check12">
+                    <label for="check12">Gurtňa je ovinutá okolo fúkara, aby som ju nestratil a aby lepšie upevnila rukáv fúkara</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="check13" name="check13">
+                    <label for="check13">Po akcii som upratal bordel po sebe a okolo atrakcie</label>
+                </div>
+            </div>
+
+            <div class="checklist-section">
+                <div class="checklist-title">Kontrola brigádnik (povinné, ak ostávaš pri atrakcii)</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik1" name="brigadnik1">
+                    <label for="brigadnik1">Mám zabavka tričko (ak nemáš tričko, pozri formulár dole)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik2" name="brigadnik2">
+                    <label for="brigadnik2">Nemám otrhané veci</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik3" name="brigadnik3">
+                    <label for="brigadnik3">Mám pevnú alebo športovú obuv = celé topánky</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik4" name="brigadnik4">
+                    <label for="brigadnik4">Nefajčím pri atrakcii</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik5" name="brigadnik5">
+                    <label for="brigadnik5">Nepoužívam slúchadlá</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik6" name="brigadnik6">
+                    <label for="brigadnik6">Nepijem alkohol ani nealko pivo!!!</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik7" name="brigadnik7">
+                    <label for="brigadnik7">Nekonzumujem drogy</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik8" name="brigadnik8">
+                    <label for="brigadnik8">Mám atrakciu pod kontrolou</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik9" name="brigadnik9">
+                    <label for="brigadnik9">Neopúštam atrakciu pokiaľ v nej sú deti</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik10" name="brigadnik10">
+                    <label for="brigadnik10">Nehrajem sa s mobilom</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="brigadnik11" name="brigadnik11">
+                    <label for="brigadnik11">Nezakecávam sa s kamošmi/ neflirtujem s opačným pohlavím</label>
+                </div>
+            </div>
+
+            <div class="checklist-section sofer-section">
+                <div class="checklist-title">Kontrola šofér (povinné, ak jazdíš na aute)</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sofer1" name="sofer1">
+                    <label for="sofer1">Mám odfotené vozidlo pred (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sofer2" name="sofer2">
+                    <label for="sofer2">Skontroloval som si skladový lístok, že beriem dobrú dodávku s dobrými atrakciami</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sofer3" name="sofer3">
+                    <label for="sofer3">Vypisujem všade stav km a čo som vyložil/ naložil</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sofer4" name="sofer4">
+                    <label for="sofer4">Mám odfotené vozidlo po (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sofer5" name="sofer5">
+                    <label for="sofer5">Mám komplet vypísaný skladový lístok</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="sofer6" name="sofer6">
+                    <label for="sofer6">Ak som meškal okamžite som informoval zákazníka</label>
+                </div>
+            </div>
+
+            <div class="checklist-section oslavy-section">
+                <div class="checklist-title">Rodinné oslavy (vypisuje šofér)</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="oslava1" name="oslava1">
+                    <label for="oslava1">Kladivo, predlžovačky a zvyšné háky som vzal do dodávky (kladivo neostáva na rod. oslave)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="oslava2" name="oslava2">
+                    <label for="oslava2">Poučil som zákazníka, čo robiť v prípade dažďa, prípadne cez noc</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="oslava3" name="oslava3">
+                    <label for="oslava3">Mám podpísanú a vypísanú zmluvu (nezabudnúť údaje a podpis klienta)</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="oslava4" name="oslava4">
+                    <label for="oslava4">Mám peniaze prípadne voucher na zľavomat (peniaze beriem pred akciou)</label>
+                </div>
+            </div>
+
+            <div class="checklist-section pokladna-section">
+                <div class="checklist-title">Pokladňa (len pri výbere vstupného, vypisuje pokladník )</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna1" name="pokladna1">
+                    <label for="pokladna1">Som prihlásený na ZABAVKA s.r.o na pokladni/ terminále</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna2" name="pokladna2">
+                    <label for="pokladna2">Mám na pokladni nastavenú polohu</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna3" name="pokladna3">
+                    <label for="pokladna3">Sadzba DPH je 23%</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna4" name="pokladna4">
+                    <label for="pokladna4">Ak zákazník platí kartou tlačím bloček z pokladne aj z terminálu</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna5" name="pokladna5">
+                    <label for="pokladna5">Mám nalepené koľko stojí vstup na hrad</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna6" name="pokladna6">
+                    <label for="pokladna6">Mám nalepený papier o evidencii tržieb</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="pokladna7" name="pokladna7">
+                    <label for="pokladna7">Všetky deti/ dospelí, ktorí využívajú atrakcie majú na ruke pásku/ žetóny</label>
+                </div>
+            </div>
+
+            <div class="checklist-section maskoti-section">
+                <div class="checklist-title">Maskoti (vypisuje len človek v maskotovi)</div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot1" name="maskot1">
+                    <label for="maskot1">Jeden človek si oblieka len jeden kostým kvôli hygiene</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot2" name="maskot2">
+                    <label for="maskot2">Žiaden makeup</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot3" name="maskot3">
+                    <label for="maskot3">Nechodím bez hlavy. Hlavu si dávam dole až v šatni</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot4" name="maskot4">
+                    <label for="maskot4">V maskotovi kývem, tancujem, dávam ťap, objímam sa...</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot5" name="maskot5">
+                    <label for="maskot5">Nikdy nedvíham deti na ruky</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot6" name="maskot6">
+                    <label for="maskot6">Neber veci do ruky napr. torty atd.</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot7" name="maskot7">
+                    <label for="maskot7">V maskotovi nerozprávam</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot8" name="maskot8">
+                    <label for="maskot8">Neválam sa po zemi</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot9" name="maskot9">
+                    <label for="maskot9">Striedam sa 20 min idem a 10 min mám pauzu</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot10" name="maskot10">
+                    <label for="maskot10">Ak ste viac na akcii viacerí nemáte nikdy spolu prestávky stále musí byť aspoň jeden vonku</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot11" name="maskot11">
+                    <label for="maskot11">Topánky po akcii dám do čierneho sáčku až tak ho dám do mechu</label>
+                </div>
+
+                <div class="checkbox-item">
+                    <input type="checkbox" id="maskot12" name="maskot12">
+                    <label for="maskot12">Skontroloval som, či mám všetky časti maskota</label>
+                </div>
+            </div>
+
+            <div class="form-group special-input">
+                <label for="objednavkaTricko">Sem napíš svoje meno, priezvisko a veľkosť, ak si ešte nedostal tričko zabavka alebo ti dochádzajú/ sú v zlom stave:</label>
+                <input type="text" id="objednavkaTricko" name="objednavkaTricko" placeholder="Napr. Ján Novák, veľkosť L (nepovinné)">
+            </div>
+
+            <p style="text-align: center; font-weight: bold; color: #000; margin: 20px 0; font-size: 1.4em;">
+                Vypisuješ len ak nemáš zabavka apku ⬇
+            </p>
+
+            <div class="form-group special-input">
+                <label for="servisDodavky">Chcem nahlásiť servis dodávky:</label>
+                <input type="text" id="servisDodavky" name="servisDodavky" placeholder="Popíšte problém s dodávkou (nepovinné)">
+            </div>
+
+            <div class="form-group special-input">
+                <label for="servisAtrakcie">Chcem nahlásiť servis atrakcie:</label>
+                <input type="text" id="servisAtrakcie" name="servisAtrakcie" placeholder="Popíšte problém s atrakciou (nepovinné)">
+            </div>
+
+            <div class="form-group special-input">
+                <label for="cistenieAtrakcie">Chcem nahlásiť čistenie atrakcie:</label>
+                <input type="text" id="cistenieAtrakcie" name="cistenieAtrakcie" placeholder="Popíšte potrebu čistenia (nepovinné)">
+            </div>
+
+            <div class="form-group special-input">
+                <label for="spravaPreSefku">Máš ešte niečo na srdci, čo by si chcel povedať šéfkovi tj. návrhy na zlepšenie, nápady, sťažnosti...</label>
+                <input type="text" id="spravaPreSefku" name="spravaPreSefku" placeholder="Napíš čokoľvek, čo máš na srdci (nepovinné)">
+            </div>
+
+            <button type="submit" class="submit-button">
+                 Odoslať protokol
+            </button>
+
+            <div id="successMessage" class="success-message">
+                <img src="stefan.png" alt="Štefan" style="width: 300px; height: 300px; border-radius: 50%; margin-bottom: 20px;">
+                <br>
+                ✅ Výborne! Štefan byť na teba moc moc hrdý. Ty byť moc šikovný zabavkár 🎉
+            </div>
+
+            <div id="errorMessage" class="error-message">
+                <img src="stefan-error.png" alt="Štefan nespokojný" style="width: 300px; height: 300px; border-radius: 50%; margin-bottom: 20px;">
+                <br>
+                Chyba pri odosielaní 😅  Musíš sa viac snažiť synu 🙏
+            </div>
+        </form>
+    </div>
+
+    <script>
+        // ==============================================
+        // KONFIGURÁCIA GOOGLE SHEETS
+        // ==============================================
+        const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx0pFIfGSbuu8YndFPUF13n30Z-IgONIlHiPQwHvIm3BPewnvcBCrBr-GsSdF_teLdajQ/exec';
+
+        // Automaticky nastaviť dnešný dátum
+        document.addEventListener('DOMContentLoaded', function() {
+            const datumInput = document.getElementById('datum');
+            const today = new Date();
+            const year = today.getFullYear();
+            const month = String(today.getMonth() + 1).padStart(2, '0');
+            const day = String(today.getDate()).padStart(2, '0');
+            datumInput.value = `${year}-${month}-${day}`;
+        });
+
+        // Spracovanie formulára
+        document.getElementById('checklistForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const submitButton = document.querySelector('.submit-button');
+            const successMessage = document.getElementById('successMessage');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Skryť predchádzajúce správy
+            successMessage.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            // Pridať loading stav
+            submitButton.classList.add('loading');
+            submitButton.innerHTML = '📋 Odosielam...<span class="spinner"></span>';
+
+            // Získanie dát z formulára
+            const datum = document.getElementById('datum').value;
+            const nazovAkcie = document.getElementById('nazovAkcie').value;
+            const atrakcia = document.getElementById('atrakcia').value;
+            const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
+            const druhAkcie = document.querySelector('input[name="druhAkcie"]:checked').value;
+            const vstupne = document.querySelector('input[name="vstupne"]:checked').value;
+            const objednavkaTricko = document.getElementById('objednavkaTricko').value;
+            const servisDodavky = document.getElementById('servisDodavky').value;
+            const servisAtrakcie = document.getElementById('servisAtrakcie').value;
+            const cistenieAtrakcie = document.getElementById('cistenieAtrakcie').value;
+            const spravaPreSefku = document.getElementById('spravaPreSefku').value;
+
+            // Formátovanie checklistu
+            const checklistItems = [
+                { text: 'Atrakcia je prikotvená k zemi (závažím alebo žltými hákmi)', checked: document.getElementById('check1').checked },
+                { text: 'Atrakcia má nalepený pri vchode prevádzkový poriadok, je tam napísaný počet detí, výška...', checked: document.getElementById('check2').checked },
+                { text: 'Pred atrakciou je pekne rovno Zabavka koberček, aby si tam deti dali topánky', checked: document.getElementById('check3').checked },
+                { text: 'Atrakciu som prešiel z vnútra a vyhádzal všetky odpadky', checked: document.getElementById('check4').checked },
+                { text: 'Atrakcia nie je špinavá (blato, ihličie, listy...) príp. vyčistil som ju v rámci možností (použi čistiacu sadu)', checked: document.getElementById('check5').checked },
+                { text: 'Predlžovačky sú celé roztočené a mimo dosahu detí (na bubne nesmie ostať navinutý žiaden kábel!!!)', checked: document.getElementById('check6').checked },
+                { text: 'Kábel je poza atrakciu, ľudia o neho nezakopujú a vizuálne nie je "na jednej kope"', checked: document.getElementById('check7').checked },
+                { text: 'Za atrakciou je poskladaná celta na prekrytie v prípade dažďa', checked: document.getElementById('check8').checked },
+                { text: 'Rukávy fúkačov sú v poriadku a nezablokované - kompresory nič neblokuje', checked: document.getElementById('check9').checked },
+                { text: 'Fúkače sú rovno = nie sú spadnuté', checked: document.getElementById('check10').checked },
+                { text: 'Okolie atrakcie je upratané, nie sú tam pohádzané háky, kladivá... tie sú odložené v dodávke alebo za hradom pod celtou', checked: document.getElementById('check11').checked },
+                { text: 'Gurtňa je ovinutá okolo fúkača, aby som ju nestratil a aby lepšie upevnila fúkač', checked: document.getElementById('check12').checked }
+            ];
+
+            // Formátovanie kontroly brigádnik
+            const brigadnikItems = [
+                { text: 'Mám zabavka tričko', checked: document.getElementById('brigadnik1').checked },
+                { text: 'Nemám otrhané veci', checked: document.getElementById('brigadnik2').checked },
+                { text: 'Mám pevnú alebo športovú obuv = celé topánky', checked: document.getElementById('brigadnik3').checked },
+                { text: 'Nefajčím pri atrakcii', checked: document.getElementById('brigadnik4').checked },
+                { text: 'Nepoužívam slúchadlá', checked: document.getElementById('brigadnik5').checked },
+                { text: 'Nepijem alkohol ani nealko pivo!!!', checked: document.getElementById('brigadnik6').checked },
+                { text: 'Nekonzumujem drogy', checked: document.getElementById('brigadnik7').checked },
+                { text: 'Mám atrakciu pod kontrolou', checked: document.getElementById('brigadnik8').checked },
+                { text: 'Neopúštam atrakciu pokiaľ v nej sú deti', checked: document.getElementById('brigadnik9').checked },
+                { text: 'Nehrajem sa s mobilom', checked: document.getElementById('brigadnik10').checked },
+                { text: 'Nezakecávam sa s kamošmi/ neflirtujem s opačným pohlavím', checked: document.getElementById('brigadnik11').checked }
+            ];
+
+            // Formátovanie kontroly šofér
+            const soferItems = [
+                { text: 'Mám odfotené vozidlo pred (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)', checked: document.getElementById('sofer1').checked },
+                { text: 'Skontroloval som si skladový lístok, že beriem dobrú dodávku s dobrými atrakciami', checked: document.getElementById('sofer2').checked },
+                { text: 'Vypisujem všade stav km a čo som vyložil/ naložil', checked: document.getElementById('sofer3').checked },
+                { text: 'Mám odfotené vozidlo po (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)', checked: document.getElementById('sofer4').checked },
+                { text: 'Mám komplet vypísaný skladový lístok', checked: document.getElementById('sofer5').checked },
+                { text: 'Ak som meškal okamžite som informoval zákazníka', checked: document.getElementById('sofer6').checked }
+            ];
+
+            // Formátovanie rodinných osláv
+            const oslavaItems = [
+                { text: 'Kladivo, predlžovačky a zvyšné háky som vzal do dodávky (kladivo neostáva na rod. oslave)', checked: document.getElementById('oslava1').checked },
+                { text: 'Poučil som zákazníka, čo robiť v prípade dažďa, prípadne cez noc', checked: document.getElementById('oslava2').checked },
+                { text: 'Mám podpísanú a vypísanú zmluvu (nezabudnúť údaje a podpis klienta)', checked: document.getElementById('oslava3').checked },
+                { text: 'Mám peniaze prípadne voucher na zľavomat (peniaze beriem pred akciou)', checked: document.getElementById('oslava4').checked }
+            ];
+
+            // Formátovanie pokladne
+            const pokladnaItems = [
+                { text: 'Som prihlásený na ZABAVKA s.r.o na pokladni/ terminále', checked: document.getElementById('pokladna1').checked },
+                { text: 'Mám na pokladni nastavenú polohu', checked: document.getElementById('pokladna2').checked },
+                { text: 'Sadzba DPH je 23%', checked: document.getElementById('pokladna3').checked },
+                { text: 'Ak zákazník platí kartou tlačím bloček z pokladne aj z terminálu', checked: document.getElementById('pokladna4').checked },
+                { text: 'Mám nalepené koľko stojí vstup na hrad', checked: document.getElementById('pokladna5').checked },
+                { text: 'Mám nalepený papier o evidencii tržieb', checked: document.getElementById('pokladna6').checked },
+                { text: 'Všetky deti/ dospelí, ktorí využívajú atrakcie majú na ruke pásku/ žetóny', checked: document.getElementById('pokladna7').checked }
+            ];
+
+            // Formátovanie maskotov
+            const maskotItems = [
+                { text: 'Jeden človek si oblieka len jeden kostým kvôli hygiene', checked: document.getElementById('maskot1').checked },
+                { text: 'Žiaden makeup', checked: document.getElementById('maskot2').checked },
+                { text: 'Nechodím bez hlavy. Hlavu si dávam dole až v šatni', checked: document.getElementById('maskot3').checked },
+                { text: 'V maskotovi kývem, tancujem, dávam ťap, objímam sa...', checked: document.getElementById('maskot4').checked },
+                { text: 'Nikdy nedvíham deti na ruky', checked: document.getElementById('maskot5').checked },
+                { text: 'Neber veci do ruky napr. torty atd.', checked: document.getElementById('maskot6').checked },
+                { text: 'V maskotovi nerozprávam', checked: document.getElementById('maskot7').checked },
+                { text: 'Neválam sa po zemi', checked: document.getElementById('maskot8').checked },
+                { text: 'Striedam sa 20 min idem a 10 min mám pauzu', checked: document.getElementById('maskot9').checked },
+                { text: 'Ak ste viac na akcii viacerí nemáte nikdy spolu prestávky stále musí byť aspoň jeden vonku', checked: document.getElementById('maskot10').checked },
+                { text: 'Topánky po akcii dám do čierneho sáčku až tak ho dám do mechu', checked: document.getElementById('maskot11').checked },
+                { text: 'Skontroloval som, či mám všetky časti maskota', checked: document.getElementById('maskot12').checked }
+            ];
+
+            // Vytvorenie prehľadného zoznamu pre email
+            let checklistHtml = '';
+            checklistItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                checklistHtml += `${icon} ${item.text}\n`;
+            });
+
+            let brigadnikHtml = '';
+            brigadnikItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                brigadnikHtml += `${icon} ${item.text}\n`;
+            });
+
+            let soferHtml = '';
+            soferItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                soferHtml += `${icon} ${item.text}\n`;
+            });
+
+            let oslavaHtml = '';
+            oslavaItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                oslavaHtml += `${icon} ${item.text}\n`;
+            });
+
+            let pokladnaHtml = '';
+            pokladnaItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                pokladnaHtml += `${icon} ${item.text}\n`;
+            });
+
+            let maskotHtml = '';
+            maskotItems.forEach(item => {
+                const icon = item.checked ? '✅' : '❌';
+                maskotHtml += `${icon} ${item.text}\n`;
+            });
+
+            // Parametre pre Google Sheets
+            const formData = {
+                datum: datum,
+                nazov_akcie: nazovAkcie,
+                atrakcia: atrakcia,
+                meno_priezvisko: menoAPriezvisko,
+                druh_akcie: druhAkcie,
+                vstupne: vstupne,
+                checklist: checklistHtml,
+                brigadnik: brigadnikHtml,
+                sofer: soferHtml,
+                rodinne_oslavy: oslavaHtml,
+                pokladna: pokladnaHtml,
+                maskoti: maskotHtml,
+                objednavka_tricko: objednavkaTricko,
+                servis_dodavky: servisDodavky,
+                servis_atrakcie: servisAtrakcie,
+                cistenie_atrakcie: cistenieAtrakcie,
+                sprava_pre_sefku: spravaPreSefku,
+                cas_odoslania: new Date().toLocaleString('sk-SK')
+            };
+
+            // Odoslanie dát do Google Sheets
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData)
+            })
+                .then(function() {
+                    // no-cors mode nevráti odpoveď, takže predpokladáme úspech
+                    console.log('Dáta odoslané do Google Sheets');
+                    
+                    // Zobrazenie úspešnej správy
+                    successMessage.style.display = 'block';
+                    submitButton.classList.remove('loading');
+                    submitButton.innerHTML = '📋 Odoslať protokol';
+
+                    // Reset formulára po 10 sekundách
+                    setTimeout(() => {
+                        successMessage.style.display = 'none';
+                        // Vyčistenie formulára
+                        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                        document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
+                        document.getElementById('nazovAkcie').value = '';
+                        document.getElementById('atrakcia').value = '';
+                        document.getElementById('menoAPriezvisko').value = '';
+                        document.getElementById('objednavkaTricko').value = '';
+                        document.getElementById('servisDodavky').value = '';
+                        document.getElementById('servisAtrakcie').value = '';
+                        document.getElementById('cistenieAtrakcie').value = '';
+                        document.getElementById('spravaPreSefku').value = '';
+                        // Znovu nastaviť dnešný dátum
+                        const today = new Date();
+                        document.getElementById('datum').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                    }, 10000);
+                })
+                .catch(function(error) {
+                    console.error('Chyba pri odosielaní:', error);
+                    
+                    // Zobrazenie chybovej správy
+                    errorMessage.style.display = 'block';
+                    submitButton.classList.remove('loading');
+                    submitButton.innerHTML = '📋 Odoslať protokol';
+
+                    // Skrytie chybovej správy po 10 sekundách
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 10000);
+                });
+        });
+    </script>
+</body>
+</html>
