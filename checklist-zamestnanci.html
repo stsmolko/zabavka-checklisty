@@ -1230,6 +1230,10 @@
         // Spracovanie formulára
         document.getElementById('checklistForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+
+            alert('Formulár sa spracováva...');
+            console.log('Formulár sa začal odosielať...');
 
             // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
             const checklistCheckboxes = [

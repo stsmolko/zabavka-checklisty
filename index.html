@@ -1212,6 +1212,8 @@
     </div>
 
     <script>
+        console.log('Script sa načítal!');
+        
         // ==============================================
         // KONFIGURÁCIA GOOGLE SHEETS
         // ==============================================
@@ -1219,17 +1221,27 @@
 
         // Automaticky nastaviť dnešný dátum
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOMContentLoaded event spustený');
             const datumInput = document.getElementById('datum');
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             datumInput.value = `${year}-${month}-${day}`;
+            console.log('Dátum nastavený na:', datumInput.value);
         });
 
         // Spracovanie formulára
+        console.log('Registrujem submit listener...');
+        const form = document.getElementById('checklistForm');
+        console.log('Formulár element:', form);
+        
         document.getElementById('checklistForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            e.stopPropagation();
+
+            alert('Formulár sa spracováva...');
+            console.log('Formulár sa začal odosielať...');
 
             // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
             const checklistCheckboxes = [
@@ -1244,8 +1256,12 @@
             const checklistChecked = checklistCheckboxes.some(id => document.getElementById(id).checked);
             const maskotChecked = maskotCheckboxes.some(id => document.getElementById(id).checked);
             
+            console.log('Kontrola atrakcie zaškrtnuté:', checklistChecked);
+            console.log('Maskoti zaškrtnuté:', maskotChecked);
+            
             if (!checklistChecked && !maskotChecked) {
                 alert('⚠️ Musíte zaškrtnúť aspoň jedno políčko v sekcii "KONTROLA ATRAKCIE" alebo v sekcii "MASKOTI"!');
+                console.log('Validácia zlyhala: Žiadne políčko nie je zaškrtnuté');
                 return;
             }
 
@@ -1253,6 +1269,9 @@
             const datumInput = document.getElementById('datum').value;
             const today = new Date();
             const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+            
+            console.log('Dátum v úvode:', datumInput);
+            console.log('Dnešný dátum:', todayString);
             
             if (datumInput !== todayString) {
                 const datumParts = datumInput.split('-');
@@ -1262,9 +1281,12 @@
                 
                 const confirmation = confirm(`⚠️ UPOZORNENIE!\n\nDátum v úvode: ${datumFormatted}\nDnešný dátum (dátum odoslania): ${todayFormatted}\n\nDátumy sa nezhodujú. Chcete napriek tomu odoslať formulár?`);
                 if (!confirmation) {
+                    console.log('Používateľ zrušil odoslanie kvôli rozdielnym dátumom');
                     return;
                 }
             }
+
+            console.log('Všetky validácie prešli, začínam odosielať...');
 
             const submitButton = document.querySelector('.submit-button');
             const successMessage = document.getElementById('successMessage');
