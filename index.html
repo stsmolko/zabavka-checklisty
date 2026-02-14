@@ -84,11 +84,23 @@
             transition: all 0.3s ease;
             background: #fff;
             text-align: left !important;
+            box-sizing: border-box;
+            height: auto;
+            min-height: 50px;
         }
 
         /* Extra pravidlo pre dátum na mobile */
         input[type="date"] {
             text-align: left !important;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            appearance: none;
+            padding: 15px !important;
+        }
+        
+        /* Oprava pre Safari na iOS */
+        input[type="date"]::-webkit-date-and-time-value {
+            text-align: left;
         }
 
         .form-group input[type="text"]:focus,
