@@ -502,11 +502,6 @@
                 <input type="text" id="menoAPriezvisko" name="menoAPriezvisko" placeholder="Zadajte vaše meno a priezvisko (povinné)" required>
             </div>
 
-            <div class="form-group">
-                <label for="emailZamestnanca">Váš email (dostanete potvrdenie o vyplnení):</label>
-                <input type="email" id="emailZamestnanca" name="emailZamestnanca" placeholder="feri@gmail.com (povinné)" required>
-            </div>
-
             <div class="radio-group">
                 <label class="radio-group-label">Druh akcie (povinné):</label>
                 <div class="radio-options">
@@ -985,7 +980,6 @@
             const nazovAkcie = document.getElementById('nazovAkcie').value;
             const atrakcia = document.getElementById('atrakcia').value;
             const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
-            const emailZamestnanca = document.getElementById('emailZamestnanca').value;
             const druhAkcie = document.querySelector('input[name="druhAkcie"]:checked').value;
             const vstupne = document.querySelector('input[name="vstupne"]:checked').value;
             const objednavkaTricko = document.getElementById('objednavkaTricko').value;
@@ -1115,7 +1109,6 @@
                 nazov_akcie: nazovAkcie,
                 atrakcia: atrakcia,
                 meno_priezvisko: menoAPriezvisko,
-                email_zamestnanca: emailZamestnanca,
                 druh_akcie: druhAkcie,
                 vstupne: vstupne,
                 checklist: checklistHtml,
@@ -1161,7 +1154,6 @@
                         document.getElementById('nazovAkcie').value = '';
                         document.getElementById('atrakcia').value = '';
                         document.getElementById('menoAPriezvisko').value = '';
-                        document.getElementById('emailZamestnanca').value = '';
                         document.getElementById('objednavkaTricko').value = '';
                         document.getElementById('servisDodavky').value = '';
                         document.getElementById('servisAtrakcie').value = '';

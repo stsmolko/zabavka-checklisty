@@ -502,11 +502,6 @@
                 <input type="text" id="menoAPriezvisko" name="menoAPriezvisko" placeholder="Zadajte vaše meno a priezvisko (povinné)" required>
             </div>
 
-            <div class="form-group">
-                <label for="emailZamestnanca">Váš email (dostanete potvrdenie o vyplnení):</label>
-                <input type="email" id="emailZamestnanca" name="emailZamestnanca" placeholder="feri@gmail.com (povinné)" required>
-            </div>
-
             <div class="radio-group">
                 <label class="radio-group-label">Druh akcie (povinné):</label>
                 <div class="radio-options">
@@ -902,8 +897,12 @@
         // ==============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQT-VOlFSf0XgKRpBEwXLngspKZeQPzbNFOSBuCdqNh-KmoLdyU4oP6IL5BPGvMJrW/exec';
 
+        console.log('JavaScript sa načítal!');
+        alert('JavaScript funguje! Klikni OK a skús odoslať formulár.');
+
         // Automaticky nastaviť dnešný dátum a pripojiť submit handler
         document.addEventListener('DOMContentLoaded', function() {
+            console.log('DOM je načítaný, pripájam submit handler...');
             const datumInput = document.getElementById('datum');
             const today = new Date();
             const year = today.getFullYear();
@@ -955,6 +954,10 @@
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
 
+            console.log('submitButton:', submitButton);
+            console.log('successMessage:', successMessage);
+            console.log('errorMessage:', errorMessage);
+
             // Skryť predchádzajúce správy
             successMessage.style.display = 'none';
             errorMessage.style.display = 'none';
@@ -983,7 +986,6 @@
             const nazovAkcie = document.getElementById('nazovAkcie').value;
             const atrakcia = document.getElementById('atrakcia').value;
             const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
-            const emailZamestnanca = document.getElementById('emailZamestnanca').value;
             const druhAkcie = document.querySelector('input[name="druhAkcie"]:checked').value;
             const vstupne = document.querySelector('input[name="vstupne"]:checked').value;
             const objednavkaTricko = document.getElementById('objednavkaTricko').value;
@@ -1113,7 +1115,6 @@
                 nazov_akcie: nazovAkcie,
                 atrakcia: atrakcia,
                 meno_priezvisko: menoAPriezvisko,
-                email_zamestnanca: emailZamestnanca,
                 druh_akcie: druhAkcie,
                 vstupne: vstupne,
                 checklist: checklistHtml,
@@ -1128,6 +1129,9 @@
                 cistenie_atrakcie: cistenieAtrakcie,
                 sprava_pre_sefku: spravaPreSefku
             };
+
+            // TEST: Potvrdenie pred odoslaním
+            console.log('=== PRED FETCH, formData pripravené ===', formData);
 
             // Odoslanie dát do Google Sheets
             fetch(GOOGLE_SCRIPT_URL, {
@@ -1145,10 +1149,14 @@
                     // Počkaj 3 sekundy aby sa email stihol odoslať
                     setTimeout(() => {
                         console.log('=== ZOBRAZUJEM ÚSPEŠNÚ SPRÁVU ===');
+                        console.log('successMessage element pred zmenou:', successMessage);
+                        console.log('successMessage.style.display pred:', successMessage.style.display);
                         // Zobrazenie úspešnej správy
                         successMessage.style.display = 'block';
+                        console.log('successMessage.style.display po:', successMessage.style.display);
                         submitButton.classList.remove('loading');
                         submitButton.innerHTML = '📋 Odoslať protokol';
+                        console.log('=== HLÁŠKA BY MALA BYŤ VIDITEĽNÁ ===');
                     }, 3000);
 
                     // Reset formulára po 23 sekundách (3s čakanie + 20s zobrazenie)
@@ -1160,7 +1168,6 @@
                         document.getElementById('nazovAkcie').value = '';
                         document.getElementById('atrakcia').value = '';
                         document.getElementById('menoAPriezvisko').value = '';
-                        document.getElementById('emailZamestnanca').value = '';
                         document.getElementById('objednavkaTricko').value = '';
                         document.getElementById('servisDodavky').value = '';
                         document.getElementById('servisAtrakcie').value = '';
