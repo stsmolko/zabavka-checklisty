@@ -892,33 +892,21 @@
     </div>
 
     <script>
-        alert('1. JavaScript súbor sa načítal');
-        
         // ==============================================
         // KONFIGURÁCIA GOOGLE SHEETS
         // ==============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQT-VOlFSf0XgKRpBEwXLngspKZeQPzbNFOSBuCdqNh-KmoLdyU4oP6IL5BPGvMJrW/exec';
 
-        alert('2. GOOGLE_SCRIPT_URL nastavená');
-
         // Automaticky nastaviť dnešný dátum a pripojiť submit handler
         document.addEventListener('DOMContentLoaded', function() {
-            alert('3. DOMContentLoaded sa spustil');
-            
             const datumInput = document.getElementById('datum');
-            alert('4. datumInput element: ' + (datumInput ? 'NAŠLO SA' : 'NENAŠLO SA'));
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             datumInput.value = `${year}-${month}-${day}`;
             
-            alert('5. Dátum nastavený');
-            
             // Spracovanie formulára
-            const formElement = document.getElementById('checklistForm');
-            alert('6. Form element: ' + (formElement ? 'NAŠLO SA' : 'NENAŠLO SA'));
-            
             document.getElementById('checklistForm').addEventListener('submit', function(e) {
                 e.preventDefault();
                 
@@ -1186,7 +1174,14 @@
                             }, 20000);
                 });
                 } catch (error) {
-                    alert('CHYBA V JAVASCRIPTE: ' + error.message);
+                    // Zobrazenie chybovej správy pri chybe
+                    errorMessage.style.display = 'block';
+                    submitButton.classList.remove('loading');
+                    submitButton.innerHTML = '📋 Odoslať protokol';
+
+                    setTimeout(() => {
+                        errorMessage.style.display = 'none';
+                    }, 20000);
                 }
             });
         });
