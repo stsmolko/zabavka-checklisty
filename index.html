@@ -918,7 +918,7 @@
             // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
             const checklistCheckboxes = [
                 'check1', 'check2', 'check3', 'check4', 'check5', 'check6', 'check7', 'check8', 'check9',
-                'check10', 'check11', 'check12', 'check13', 'check14', 'check15', 'check16', 'check17', 'check18'
+                'check10', 'check11', 'check12', 'check13'
             ];
             const maskotCheckboxes = [
                 'maskot1', 'maskot2', 'maskot3', 'maskot4', 'maskot5', 'maskot6',
@@ -986,15 +986,30 @@
             const nazovAkcie = document.getElementById('nazovAkcie').value;
             const atrakcia = document.getElementById('atrakcia').value;
             const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
-            const druhAkcie = document.querySelector('input[name="druhAkcie"]:checked').value;
-            const vstupne = document.querySelector('input[name="vstupne"]:checked').value;
+            
+            console.log('Získavam druhAkcie...');
+            const druhAkcieElement = document.querySelector('input[name="druhAkcie"]:checked');
+            console.log('druhAkcieElement:', druhAkcieElement);
+            const druhAkcie = druhAkcieElement ? druhAkcieElement.value : '';
+            
+            console.log('Získavam vstupne...');
+            const vstupneElement = document.querySelector('input[name="vstupne"]:checked');
+            console.log('vstupneElement:', vstupneElement);
+            const vstupne = vstupneElement ? vstupneElement.value : '';
+            
+            console.log('druhAkcie:', druhAkcie);
+            console.log('vstupne:', vstupne);
+            
+            console.log('Získavam textové polia...');
             const objednavkaTricko = document.getElementById('objednavkaTricko').value;
             const servisDodavky = document.getElementById('servisDodavky').value;
             const servisAtrakcie = document.getElementById('servisAtrakcie').value;
             const cistenieAtrakcie = document.getElementById('cistenieAtrakcie').value;
             const spravaPreSefku = document.getElementById('spravaPreSefku').value;
+            console.log('Textové polia OK');
 
             // Formátovanie checklistu
+            console.log('Vytváram checklist HTML...');
             const checklistItems = [
                 { text: 'Atrakcia je prikotvená k zemi (závažím alebo žltými hákmi)', checked: document.getElementById('check1').checked },
                 { text: 'Atrakcia má nalepený pri vchode prevádzkový poriadok, je tam napísaný počet detí, výška...', checked: document.getElementById('check2').checked },
@@ -1007,7 +1022,8 @@
                 { text: 'Rukávy fúkačov sú v poriadku a nezablokované - kompresory nič neblokuje', checked: document.getElementById('check9').checked },
                 { text: 'Fúkače sú rovno = nie sú spadnuté', checked: document.getElementById('check10').checked },
                 { text: 'Okolie atrakcie je upratané, nie sú tam pohádzané háky, kladivá... tie sú odložené v dodávke alebo za hradom pod celtou', checked: document.getElementById('check11').checked },
-                { text: 'Gurtňa je ovinutá okolo fúkača, aby som ju nestratil a aby lepšie upevnila fúkač', checked: document.getElementById('check12').checked }
+                { text: 'Gurtňa je ovinutá okolo fúkača, aby som ju nestratil a aby lepšie upevnila fúkač', checked: document.getElementById('check12').checked },
+                { text: 'Po akcii som upratal bordel po sebe a okolo atrakcie', checked: document.getElementById('check13').checked }
             ];
 
             // Formátovanie kontroly brigádnik
@@ -1072,6 +1088,7 @@
 
             // Vytvorenie prehľadného zoznamu pre email
             let checklistHtml = '';
+            console.log('Spracovávam checklist items...');
             checklistItems.forEach(item => {
                 const icon = item.checked ? '✅' : '❌';
                 checklistHtml += `${icon} ${item.text}\n`;
@@ -1151,6 +1168,10 @@
                         console.log('=== ZOBRAZUJEM ÚSPEŠNÚ SPRÁVU ===');
                         console.log('successMessage element pred zmenou:', successMessage);
                         console.log('successMessage.style.display pred:', successMessage.style.display);
+                        
+                        // ALERT TEST
+                        alert('✅ FORMULÁR BOL ÚSPEŠNE ODOSLANÝ! (toto je test)');
+                        
                         // Zobrazenie úspešnej správy
                         successMessage.style.display = 'block';
                         console.log('successMessage.style.display po:', successMessage.style.display);
