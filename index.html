@@ -902,7 +902,7 @@
         // ==============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQT-VOlFSf0XgKRpBEwXLngspKZeQPzbNFOSBuCdqNh-KmoLdyU4oP6IL5BPGvMJrW/exec';
 
-        // Automaticky nastaviť dnešný dátum
+        // Automaticky nastaviť dnešný dátum a pripojiť submit handler
         document.addEventListener('DOMContentLoaded', function() {
             const datumInput = document.getElementById('datum');
             const today = new Date();
@@ -910,11 +910,11 @@
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             datumInput.value = `${year}-${month}-${day}`;
-        });
-
-        // Spracovanie formulára
-        document.getElementById('checklistForm').addEventListener('submit', function(e) {
+            
+            // Spracovanie formulára
+            document.getElementById('checklistForm').addEventListener('submit', function(e) {
             e.preventDefault();
+            console.log('=== FORMULÁR SUBMIT ZAČAL ===');
 
             // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
             const checklistCheckboxes = [
@@ -1140,9 +1140,11 @@
             })
                 .then(function() {
                     // no-cors mode nevráti odpoveď, takže predpokladáme úspech
+                    console.log('=== FETCH ÚSPEŠNÝ, ČAKÁM 3 SEKUNDY ===');
                     
                     // Počkaj 3 sekundy aby sa email stihol odoslať
                     setTimeout(() => {
+                        console.log('=== ZOBRAZUJEM ÚSPEŠNÚ SPRÁVU ===');
                         // Zobrazenie úspešnej správy
                         successMessage.style.display = 'block';
                         submitButton.classList.remove('loading');
@@ -1170,7 +1172,7 @@
                     }, 23000);
                 })
                 .catch(function(error) {
-                    console.error('Chyba pri odosielaní:', error);
+                    console.error('=== CHYBA PRI FETCH ===', error);
                     
                     // Zobrazenie chybovej správy
                     errorMessage.style.display = 'block';
@@ -1182,6 +1184,7 @@
                         errorMessage.style.display = 'none';
                     }, 20000);
                 });
+            });
         });
     </script>
 </body>

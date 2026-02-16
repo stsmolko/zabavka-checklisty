@@ -902,7 +902,7 @@
         // ==============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQT-VOlFSf0XgKRpBEwXLngspKZeQPzbNFOSBuCdqNh-KmoLdyU4oP6IL5BPGvMJrW/exec';
 
-        // Automaticky nastaviť dnešný dátum
+        // Automaticky nastaviť dnešný dátum a pripojiť submit handler
         document.addEventListener('DOMContentLoaded', function() {
             const datumInput = document.getElementById('datum');
             const today = new Date();
@@ -910,12 +910,10 @@
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             datumInput.value = `${year}-${month}-${day}`;
-        });
-
-        // Spracovanie formulára
-        document.getElementById('checklistForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
+            
+            // Spracovanie formulára
+            document.getElementById('checklistForm').addEventListener('submit', function(e) {
+                e.preventDefault();
 
             alert('Formulár sa spracováva...');
             console.log('Formulár sa začal odosielať...');
@@ -1187,6 +1185,7 @@
                         errorMessage.style.display = 'none';
                     }, 20000);
                 });
+            });
         });
     </script>
 </body>
