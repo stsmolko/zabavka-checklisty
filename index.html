@@ -943,8 +943,8 @@
 
                     // Validácia dátumu: Kontrola, či sa dátum odoslania zhoduje s dátumom v úvode
                     const formDatum = document.getElementById('datum').value;
-                    const today = new Date();
-                    const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                    const todayCheck = new Date();
+                    const todayString = `${todayCheck.getFullYear()}-${String(todayCheck.getMonth() + 1).padStart(2, '0')}-${String(todayCheck.getDate()).padStart(2, '0')}`;
                     
                     if (formDatum !== todayString) {
                         const datumParts = formDatum.split('-');
@@ -982,10 +982,10 @@
                     const casOdoslania = now.toLocaleTimeString('sk-SK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
                     
                     // Kontrola dátumu pre upozornenie
-                    const todayString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-                    const todayParts = todayString.split('-');
-                    const todayFormatted = `${todayParts[2]}.${todayParts[1]}.${todayParts[0]}`;
-                    const datumUpozornenie = (datumValue !== todayString) ? `⚠️ ROZDIELNY DÁTUM! Dátum v úvode: ${datum}, Dátum odoslania: ${todayFormatted}` : '';
+                    const todayStringFormatted = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                    const todayPartsFormatted = todayStringFormatted.split('-');
+                    const todayFormattedDisplay = `${todayPartsFormatted[2]}.${todayPartsFormatted[1]}.${todayPartsFormatted[0]}`;
+                    const datumUpozornenie = (datumValue !== todayStringFormatted) ? `⚠️ ROZDIELNY DÁTUM! Dátum v úvode: ${datum}, Dátum odoslania: ${todayFormattedDisplay}` : '';
                     
                     const nazovAkcie = document.getElementById('nazovAkcie').value;
                     const atrakcia = document.getElementById('atrakcia').value;
