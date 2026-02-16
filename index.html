@@ -897,12 +897,8 @@
         // ==============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQT-VOlFSf0XgKRpBEwXLngspKZeQPzbNFOSBuCdqNh-KmoLdyU4oP6IL5BPGvMJrW/exec';
 
-        console.log('JavaScript sa načítal!');
-        alert('JavaScript funguje! Klikni OK a skús odoslať formulár.');
-
         // Automaticky nastaviť dnešný dátum a pripojiť submit handler
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('DOM je načítaný, pripájam submit handler...');
             const datumInput = document.getElementById('datum');
             const today = new Date();
             const year = today.getFullYear();
@@ -913,7 +909,6 @@
             // Spracovanie formulára
             document.getElementById('checklistForm').addEventListener('submit', function(e) {
             e.preventDefault();
-            console.log('=== FORMULÁR SUBMIT ZAČAL ===');
 
             // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
             const checklistCheckboxes = [
@@ -954,10 +949,6 @@
             const successMessage = document.getElementById('successMessage');
             const errorMessage = document.getElementById('errorMessage');
 
-            console.log('submitButton:', submitButton);
-            console.log('successMessage:', successMessage);
-            console.log('errorMessage:', errorMessage);
-
             // Skryť predchádzajúce správy
             successMessage.style.display = 'none';
             errorMessage.style.display = 'none';
@@ -987,29 +978,19 @@
             const atrakcia = document.getElementById('atrakcia').value;
             const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
             
-            console.log('Získavam druhAkcie...');
             const druhAkcieElement = document.querySelector('input[name="druhAkcie"]:checked');
-            console.log('druhAkcieElement:', druhAkcieElement);
             const druhAkcie = druhAkcieElement ? druhAkcieElement.value : '';
             
-            console.log('Získavam vstupne...');
             const vstupneElement = document.querySelector('input[name="vstupne"]:checked');
-            console.log('vstupneElement:', vstupneElement);
             const vstupne = vstupneElement ? vstupneElement.value : '';
             
-            console.log('druhAkcie:', druhAkcie);
-            console.log('vstupne:', vstupne);
-            
-            console.log('Získavam textové polia...');
             const objednavkaTricko = document.getElementById('objednavkaTricko').value;
             const servisDodavky = document.getElementById('servisDodavky').value;
             const servisAtrakcie = document.getElementById('servisAtrakcie').value;
             const cistenieAtrakcie = document.getElementById('cistenieAtrakcie').value;
             const spravaPreSefku = document.getElementById('spravaPreSefku').value;
-            console.log('Textové polia OK');
 
             // Formátovanie checklistu
-            console.log('Vytváram checklist HTML...');
             const checklistItems = [
                 { text: 'Atrakcia je prikotvená k zemi (závažím alebo žltými hákmi)', checked: document.getElementById('check1').checked },
                 { text: 'Atrakcia má nalepený pri vchode prevádzkový poriadok, je tam napísaný počet detí, výška...', checked: document.getElementById('check2').checked },
@@ -1088,7 +1069,6 @@
 
             // Vytvorenie prehľadného zoznamu pre email
             let checklistHtml = '';
-            console.log('Spracovávam checklist items...');
             checklistItems.forEach(item => {
                 const icon = item.checked ? '✅' : '❌';
                 checklistHtml += `${icon} ${item.text}\n`;
@@ -1147,9 +1127,6 @@
                 sprava_pre_sefku: spravaPreSefku
             };
 
-            // TEST: Potvrdenie pred odoslaním
-            console.log('=== PRED FETCH, formData pripravené ===', formData);
-
             // Odoslanie dát do Google Sheets
             fetch(GOOGLE_SCRIPT_URL, {
                 method: 'POST',
@@ -1161,23 +1138,13 @@
             })
                 .then(function() {
                     // no-cors mode nevráti odpoveď, takže predpokladáme úspech
-                    console.log('=== FETCH ÚSPEŠNÝ, ČAKÁM 3 SEKUNDY ===');
                     
                     // Počkaj 3 sekundy aby sa email stihol odoslať
                     setTimeout(() => {
-                        console.log('=== ZOBRAZUJEM ÚSPEŠNÚ SPRÁVU ===');
-                        console.log('successMessage element pred zmenou:', successMessage);
-                        console.log('successMessage.style.display pred:', successMessage.style.display);
-                        
-                        // ALERT TEST
-                        alert('✅ FORMULÁR BOL ÚSPEŠNE ODOSLANÝ! (toto je test)');
-                        
                         // Zobrazenie úspešnej správy
                         successMessage.style.display = 'block';
-                        console.log('successMessage.style.display po:', successMessage.style.display);
                         submitButton.classList.remove('loading');
                         submitButton.innerHTML = '📋 Odoslať protokol';
-                        console.log('=== HLÁŠKA BY MALA BYŤ VIDITEĽNÁ ===');
                     }, 3000);
 
                     // Reset formulára po 23 sekundách (3s čakanie + 20s zobrazenie)
@@ -1200,8 +1167,6 @@
                     }, 23000);
                 })
                 .catch(function(error) {
-                    console.error('=== CHYBA PRI FETCH ===', error);
-                    
                     // Zobrazenie chybovej správy
                     errorMessage.style.display = 'block';
                     submitButton.classList.remove('loading');
