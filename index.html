@@ -1137,17 +1137,12 @@
                 body: JSON.stringify(formData)
             })
                 .then(function() {
-                    // no-cors mode nevráti odpoveď, takže predpokladáme úspech
-                    
-                    // Počkaj 3 sekundy aby sa email stihol odoslať
-                    setTimeout(() => {
-                        // Zobrazenie úspešnej správy
-                        successMessage.style.display = 'block';
-                        submitButton.classList.remove('loading');
-                        submitButton.innerHTML = '📋 Odoslať protokol';
-                    }, 3000);
+                    // OKAMŽITE zobraz správu (bez čakania na test)
+                    successMessage.style.display = 'block';
+                    submitButton.classList.remove('loading');
+                    submitButton.innerHTML = '📋 Odoslať protokol';
 
-                    // Reset formulára po 23 sekundách (3s čakanie + 20s zobrazenie)
+                    // Reset formulára po 20 sekundách
                     setTimeout(() => {
                         successMessage.style.display = 'none';
                         // Vyčistenie formulára
@@ -1164,7 +1159,7 @@
                         // Znovu nastaviť dnešný dátum
                         const today = new Date();
                         document.getElementById('datum').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                    }, 23000);
+                    }, 20000);
                 })
                 .catch(function(error) {
                     // Zobrazenie chybovej správy
