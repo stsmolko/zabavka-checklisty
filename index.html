@@ -892,286 +892,302 @@
     </div>
 
     <script>
+        alert('1. JavaScript súbor sa načítal');
+        
         // ==============================================
         // KONFIGURÁCIA GOOGLE SHEETS
         // ==============================================
         const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQT-VOlFSf0XgKRpBEwXLngspKZeQPzbNFOSBuCdqNh-KmoLdyU4oP6IL5BPGvMJrW/exec';
 
+        alert('2. GOOGLE_SCRIPT_URL nastavená');
+
         // Automaticky nastaviť dnešný dátum a pripojiť submit handler
         document.addEventListener('DOMContentLoaded', function() {
+            alert('3. DOMContentLoaded sa spustil');
+            
             const datumInput = document.getElementById('datum');
+            alert('4. datumInput element: ' + (datumInput ? 'NAŠLO SA' : 'NENAŠLO SA'));
             const today = new Date();
             const year = today.getFullYear();
             const month = String(today.getMonth() + 1).padStart(2, '0');
             const day = String(today.getDate()).padStart(2, '0');
             datumInput.value = `${year}-${month}-${day}`;
             
+            alert('5. Dátum nastavený');
+            
             // Spracovanie formulára
+            const formElement = document.getElementById('checklistForm');
+            alert('6. Form element: ' + (formElement ? 'NAŠLO SA' : 'NENAŠLO SA'));
+            
             document.getElementById('checklistForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
-            const checklistCheckboxes = [
-                'check1', 'check2', 'check3', 'check4', 'check5', 'check6', 'check7', 'check8', 'check9',
-                'check10', 'check11', 'check12', 'check13'
-            ];
-            const maskotCheckboxes = [
-                'maskot1', 'maskot2', 'maskot3', 'maskot4', 'maskot5', 'maskot6',
-                'maskot7', 'maskot8', 'maskot9', 'maskot10', 'maskot11', 'maskot12'
-            ];
-            
-            const checklistChecked = checklistCheckboxes.some(id => document.getElementById(id).checked);
-            const maskotChecked = maskotCheckboxes.some(id => document.getElementById(id).checked);
-            
-            if (!checklistChecked && !maskotChecked) {
-                alert('⚠️ Musíte zaškrtnúť aspoň jedno políčko v sekcii "KONTROLA ATRAKCIE" alebo v sekcii "MASKOTI"!');
-                return;
-            }
-
-            // Validácia dátumu: Kontrola, či sa dátum odoslania zhoduje s dátumom v úvode
-            const formDatum = document.getElementById('datum').value;
-            const today = new Date();
-            const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-            
-            if (formDatum !== todayString) {
-                const datumParts = formDatum.split('-');
-                const datumFormatted = `${datumParts[2]}.${datumParts[1]}.${datumParts[0]}`;
-                const todayParts = todayString.split('-');
-                const todayFormatted = `${todayParts[2]}.${todayParts[1]}.${todayParts[0]}`;
+                e.preventDefault();
                 
-                const confirmation = confirm(`⚠️ UPOZORNENIE!\n\nDátum v úvode: ${datumFormatted}\nDnešný dátum (dátum odoslania): ${todayFormatted}\n\nDátumy sa nezhodujú. Chcete napriek tomu odoslať formulár?`);
-                if (!confirmation) {
-                    return;
-                }
-            }
+                try {
+                    // Validácia: Aspoň jedno políčko v "Kontrola atrakcie" ALEBO "Maskoti" musí byť zaškrtnuté
+                    const checklistCheckboxes = [
+                        'check1', 'check2', 'check3', 'check4', 'check5', 'check6', 'check7', 'check8', 'check9',
+                        'check10', 'check11', 'check12', 'check13'
+                    ];
+                    const maskotCheckboxes = [
+                        'maskot1', 'maskot2', 'maskot3', 'maskot4', 'maskot5', 'maskot6',
+                        'maskot7', 'maskot8', 'maskot9', 'maskot10', 'maskot11', 'maskot12'
+                    ];
+                    
+                    const checklistChecked = checklistCheckboxes.some(id => document.getElementById(id).checked);
+                    const maskotChecked = maskotCheckboxes.some(id => document.getElementById(id).checked);
+                    
+                    if (!checklistChecked && !maskotChecked) {
+                        alert('⚠️ Musíte zaškrtnúť aspoň jedno políčko v sekcii "KONTROLA ATRAKCIE" alebo v sekcii "MASKOTI"!');
+                        return;
+                    }
 
-            const submitButton = document.querySelector('.submit-button');
-            const successMessage = document.getElementById('successMessage');
-            const errorMessage = document.getElementById('errorMessage');
+                    // Validácia dátumu: Kontrola, či sa dátum odoslania zhoduje s dátumom v úvode
+                    const formDatum = document.getElementById('datum').value;
+                    const today = new Date();
+                    const todayString = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                    
+                    if (formDatum !== todayString) {
+                        const datumParts = formDatum.split('-');
+                        const datumFormatted = `${datumParts[2]}.${datumParts[1]}.${datumParts[0]}`;
+                        const todayParts = todayString.split('-');
+                        const todayFormatted = `${todayParts[2]}.${todayParts[1]}.${todayParts[0]}`;
+                        
+                        const confirmation = confirm(`⚠️ UPOZORNENIE!\n\nDátum v úvode: ${datumFormatted}\nDnešný dátum (dátum odoslania): ${todayFormatted}\n\nDátumy sa nezhodujú. Chcete napriek tomu odoslať formulár?`);
+                        if (!confirmation) {
+                            return;
+                        }
+                    }
 
-            // Skryť predchádzajúce správy
-            successMessage.style.display = 'none';
-            errorMessage.style.display = 'none';
+                    const submitButton = document.querySelector('.submit-button');
+                    const successMessage = document.getElementById('successMessage');
+                    const errorMessage = document.getElementById('errorMessage');
 
-            // Pridať loading stav
-            submitButton.classList.add('loading');
-            submitButton.innerHTML = '📋 Odosielam...<span class="spinner"></span>';
+                    // Skryť predchádzajúce správy
+                    successMessage.style.display = 'none';
+                    errorMessage.style.display = 'none';
 
-            // Získanie dát z formulára
-            const datumValue = document.getElementById('datum').value;
-            
-            // Preformátovanie dátumu z YYYY-MM-DD na DD.MM.YYYY
-            const datumParts = datumValue.split('-');
-            const datum = `${datumParts[2]}.${datumParts[1]}.${datumParts[0]}`;
-            
-            // Získanie len času (HH:MM:SS)
-            const now = new Date();
-            const casOdoslania = now.toLocaleTimeString('sk-SK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-            
-            // Kontrola dátumu pre upozornenie
-            const todayString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
-            const todayParts = todayString.split('-');
-            const todayFormatted = `${todayParts[2]}.${todayParts[1]}.${todayParts[0]}`;
-            const datumUpozornenie = (datumValue !== todayString) ? `⚠️ ROZDIELNY DÁTUM! Dátum v úvode: ${datum}, Dátum odoslania: ${todayFormatted}` : '';
-            
-            const nazovAkcie = document.getElementById('nazovAkcie').value;
-            const atrakcia = document.getElementById('atrakcia').value;
-            const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
-            
-            const druhAkcieElement = document.querySelector('input[name="druhAkcie"]:checked');
-            const druhAkcie = druhAkcieElement ? druhAkcieElement.value : '';
-            
-            const vstupneElement = document.querySelector('input[name="vstupne"]:checked');
-            const vstupne = vstupneElement ? vstupneElement.value : '';
-            
-            const objednavkaTricko = document.getElementById('objednavkaTricko').value;
-            const servisDodavky = document.getElementById('servisDodavky').value;
-            const servisAtrakcie = document.getElementById('servisAtrakcie').value;
-            const cistenieAtrakcie = document.getElementById('cistenieAtrakcie').value;
-            const spravaPreSefku = document.getElementById('spravaPreSefku').value;
+                    // Pridať loading stav
+                    submitButton.classList.add('loading');
+                    submitButton.innerHTML = '📋 Odosielam...<span class="spinner"></span>';
 
-            // Formátovanie checklistu
-            const checklistItems = [
-                { text: 'Atrakcia je prikotvená k zemi (závažím alebo žltými hákmi)', checked: document.getElementById('check1').checked },
-                { text: 'Atrakcia má nalepený pri vchode prevádzkový poriadok, je tam napísaný počet detí, výška...', checked: document.getElementById('check2').checked },
-                { text: 'Pred atrakciou je pekne rovno Zabavka koberček, aby si tam deti dali topánky', checked: document.getElementById('check3').checked },
-                { text: 'Atrakciu som prešiel z vnútra a vyhádzal všetky odpadky', checked: document.getElementById('check4').checked },
-                { text: 'Atrakcia nie je špinavá (blato, ihličie, listy...) príp. vyčistil som ju v rámci možností (použi čistiacu sadu)', checked: document.getElementById('check5').checked },
-                { text: 'Predlžovačky sú celé roztočené a mimo dosahu detí (na bubne nesmie ostať navinutý žiaden kábel!!!)', checked: document.getElementById('check6').checked },
-                { text: 'Kábel je poza atrakciu, ľudia o neho nezakopujú a vizuálne nie je "na jednej kope"', checked: document.getElementById('check7').checked },
-                { text: 'Za atrakciou je poskladaná celta na prekrytie v prípade dažďa', checked: document.getElementById('check8').checked },
-                { text: 'Rukávy fúkačov sú v poriadku a nezablokované - kompresory nič neblokuje', checked: document.getElementById('check9').checked },
-                { text: 'Fúkače sú rovno = nie sú spadnuté', checked: document.getElementById('check10').checked },
-                { text: 'Okolie atrakcie je upratané, nie sú tam pohádzané háky, kladivá... tie sú odložené v dodávke alebo za hradom pod celtou', checked: document.getElementById('check11').checked },
-                { text: 'Gurtňa je ovinutá okolo fúkača, aby som ju nestratil a aby lepšie upevnila fúkač', checked: document.getElementById('check12').checked },
-                { text: 'Po akcii som upratal bordel po sebe a okolo atrakcie', checked: document.getElementById('check13').checked }
-            ];
+                    // Získanie dát z formulára
+                    const datumValue = document.getElementById('datum').value;
+                    
+                    // Preformátovanie dátumu z YYYY-MM-DD na DD.MM.YYYY
+                    const datumParts = datumValue.split('-');
+                    const datum = `${datumParts[2]}.${datumParts[1]}.${datumParts[0]}`;
+                    
+                    // Získanie len času (HH:MM:SS)
+                    const now = new Date();
+                    const casOdoslania = now.toLocaleTimeString('sk-SK', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+                    
+                    // Kontrola dátumu pre upozornenie
+                    const todayString = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+                    const todayParts = todayString.split('-');
+                    const todayFormatted = `${todayParts[2]}.${todayParts[1]}.${todayParts[0]}`;
+                    const datumUpozornenie = (datumValue !== todayString) ? `⚠️ ROZDIELNY DÁTUM! Dátum v úvode: ${datum}, Dátum odoslania: ${todayFormatted}` : '';
+                    
+                    const nazovAkcie = document.getElementById('nazovAkcie').value;
+                    const atrakcia = document.getElementById('atrakcia').value;
+                    const menoAPriezvisko = document.getElementById('menoAPriezvisko').value;
+                    
+                    const druhAkcieElement = document.querySelector('input[name="druhAkcie"]:checked');
+                    const druhAkcie = druhAkcieElement ? druhAkcieElement.value : '';
+                    
+                    const vstupneElement = document.querySelector('input[name="vstupne"]:checked');
+                    const vstupne = vstupneElement ? vstupneElement.value : '';
+                    
+                    const objednavkaTricko = document.getElementById('objednavkaTricko').value;
+                    const servisDodavky = document.getElementById('servisDodavky').value;
+                    const servisAtrakcie = document.getElementById('servisAtrakcie').value;
+                    const cistenieAtrakcie = document.getElementById('cistenieAtrakcie').value;
+                    const spravaPreSefku = document.getElementById('spravaPreSefku').value;
 
-            // Formátovanie kontroly brigádnik
-            const brigadnikItems = [
-                { text: 'Mám zabavka tričko', checked: document.getElementById('brigadnik1').checked },
-                { text: 'Nemám otrhané veci', checked: document.getElementById('brigadnik2').checked },
-                { text: 'Mám pevnú alebo športovú obuv = celé topánky', checked: document.getElementById('brigadnik3').checked },
-                { text: 'Nefajčím pri atrakcii', checked: document.getElementById('brigadnik4').checked },
-                { text: 'Nepoužívam slúchadlá', checked: document.getElementById('brigadnik5').checked },
-                { text: 'Nepijem alkohol ani nealko pivo!!!', checked: document.getElementById('brigadnik6').checked },
-                { text: 'Nekonzumujem drogy', checked: document.getElementById('brigadnik7').checked },
-                { text: 'Mám atrakciu pod kontrolou', checked: document.getElementById('brigadnik8').checked },
-                { text: 'Neopúštam atrakciu pokiaľ v nej sú deti', checked: document.getElementById('brigadnik9').checked },
-                { text: 'Nehrajem sa s mobilom', checked: document.getElementById('brigadnik10').checked },
-                { text: 'Nezakecávam sa s kamošmi/ neflirtujem s opačným pohlavím', checked: document.getElementById('brigadnik11').checked }
-            ];
+                    // Formátovanie checklistu
+                    const checklistItems = [
+                        { text: 'Atrakcia je prikotvená k zemi (závažím alebo žltými hákmi)', checked: document.getElementById('check1').checked },
+                        { text: 'Atrakcia má nalepený pri vchode prevádzkový poriadok, je tam napísaný počet detí, výška...', checked: document.getElementById('check2').checked },
+                        { text: 'Pred atrakciou je pekne rovno Zabavka koberček, aby si tam deti dali topánky', checked: document.getElementById('check3').checked },
+                        { text: 'Atrakciu som prešiel z vnútra a vyhádzal všetky odpadky', checked: document.getElementById('check4').checked },
+                        { text: 'Atrakcia nie je špinavá (blato, ihličie, listy...) príp. vyčistil som ju v rámci možností (použi čistiacu sadu)', checked: document.getElementById('check5').checked },
+                        { text: 'Predlžovačky sú celé roztočené a mimo dosahu detí (na bubne nesmie ostať navinutý žiaden kábel!!!)', checked: document.getElementById('check6').checked },
+                        { text: 'Kábel je poza atrakciu, ľudia o neho nezakopujú a vizuálne nie je "na jednej kope"', checked: document.getElementById('check7').checked },
+                        { text: 'Za atrakciou je poskladaná celta na prekrytie v prípade dažďa', checked: document.getElementById('check8').checked },
+                        { text: 'Rukávy fúkačov sú v poriadku a nezablokované - kompresory nič neblokuje', checked: document.getElementById('check9').checked },
+                        { text: 'Fúkače sú rovno = nie sú spadnuté', checked: document.getElementById('check10').checked },
+                        { text: 'Okolie atrakcie je upratané, nie sú tam pohádzané háky, kladivá... tie sú odložené v dodávke alebo za hradom pod celtou', checked: document.getElementById('check11').checked },
+                        { text: 'Gurtňa je ovinutá okolo fúkača, aby som ju nestratil a aby lepšie upevnila fúkač', checked: document.getElementById('check12').checked },
+                        { text: 'Po akcii som upratal bordel po sebe a okolo atrakcie', checked: document.getElementById('check13').checked }
+                    ];
 
-            // Formátovanie kontroly šofér
-            const soferItems = [
-                { text: 'Mám odfotené vozidlo pred (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)', checked: document.getElementById('sofer1').checked },
-                { text: 'Skontroloval som si skladový lístok, že beriem dobrú dodávku s dobrými atrakciami', checked: document.getElementById('sofer2').checked },
-                { text: 'Vypisujem všade stav km a čo som vyložil/ naložil', checked: document.getElementById('sofer3').checked },
-                { text: 'Mám odfotené vozidlo po (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)', checked: document.getElementById('sofer4').checked },
-                { text: 'Mám komplet vypísaný skladový lístok', checked: document.getElementById('sofer5').checked },
-                { text: 'Ak som meškal okamžite som informoval zákazníka', checked: document.getElementById('sofer6').checked }
-            ];
+                    // Formátovanie kontroly brigádnik
+                    const brigadnikItems = [
+                        { text: 'Mám zabavka tričko', checked: document.getElementById('brigadnik1').checked },
+                        { text: 'Nemám otrhané veci', checked: document.getElementById('brigadnik2').checked },
+                        { text: 'Mám pevnú alebo športovú obuv = celé topánky', checked: document.getElementById('brigadnik3').checked },
+                        { text: 'Nefajčím pri atrakcii', checked: document.getElementById('brigadnik4').checked },
+                        { text: 'Nepoužívam slúchadlá', checked: document.getElementById('brigadnik5').checked },
+                        { text: 'Nepijem alkohol ani nealko pivo!!!', checked: document.getElementById('brigadnik6').checked },
+                        { text: 'Nekonzumujem drogy', checked: document.getElementById('brigadnik7').checked },
+                        { text: 'Mám atrakciu pod kontrolou', checked: document.getElementById('brigadnik8').checked },
+                        { text: 'Neopúštam atrakciu pokiaľ v nej sú deti', checked: document.getElementById('brigadnik9').checked },
+                        { text: 'Nehrajem sa s mobilom', checked: document.getElementById('brigadnik10').checked },
+                        { text: 'Nezakecávam sa s kamošmi/ neflirtujem s opačným pohlavím', checked: document.getElementById('brigadnik11').checked }
+                    ];
 
-            // Formátovanie rodinných osláv
-            const oslavaItems = [
-                { text: 'Kladivo, predlžovačky a zvyšné háky som vzal do dodávky (kladivo neostáva na rod. oslave)', checked: document.getElementById('oslava1').checked },
-                { text: 'Poučil som zákazníka, čo robiť v prípade dažďa, prípadne cez noc', checked: document.getElementById('oslava2').checked },
-                { text: 'Mám podpísanú a vypísanú zmluvu (nezabudnúť údaje a podpis klienta)', checked: document.getElementById('oslava3').checked },
-                { text: 'Mám peniaze prípadne voucher na zľavomat (peniaze beriem pred akciou)', checked: document.getElementById('oslava4').checked }
-            ];
+                    // Formátovanie kontroly šofér
+                    const soferItems = [
+                        { text: 'Mám odfotené vozidlo pred (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)', checked: document.getElementById('sofer1').checked },
+                        { text: 'Skontroloval som si skladový lístok, že beriem dobrú dodávku s dobrými atrakciami', checked: document.getElementById('sofer2').checked },
+                        { text: 'Vypisujem všade stav km a čo som vyložil/ naložil', checked: document.getElementById('sofer3').checked },
+                        { text: 'Mám odfotené vozidlo po (stav km, stav nádrže kontrolka, dodávka zo všetkých strán)', checked: document.getElementById('sofer4').checked },
+                        { text: 'Mám komplet vypísaný skladový lístok', checked: document.getElementById('sofer5').checked },
+                        { text: 'Ak som meškal okamžite som informoval zákazníka', checked: document.getElementById('sofer6').checked }
+                    ];
 
-            // Formátovanie pokladne
-            const pokladnaItems = [
-                { text: 'Som prihlásený na ZABAVKA s.r.o na pokladni/ terminále', checked: document.getElementById('pokladna1').checked },
-                { text: 'Mám na pokladni nastavenú polohu', checked: document.getElementById('pokladna2').checked },
-                { text: 'Sadzba DPH je 23%', checked: document.getElementById('pokladna3').checked },
-                { text: 'Ak zákazník platí kartou tlačím bloček z pokladne aj z terminálu', checked: document.getElementById('pokladna4').checked },
-                { text: 'Mám nalepené koľko stojí vstup na hrad', checked: document.getElementById('pokladna5').checked },
-                { text: 'Mám nalepený papier o evidencii tržieb', checked: document.getElementById('pokladna6').checked },
-                { text: 'Všetky deti/ dospelí, ktorí využívajú atrakcie majú na ruke pásku/ žetóny', checked: document.getElementById('pokladna7').checked }
-            ];
+                    // Formátovanie rodinných osláv
+                    const oslavaItems = [
+                        { text: 'Kladivo, predlžovačky a zvyšné háky som vzal do dodávky (kladivo neostáva na rod. oslave)', checked: document.getElementById('oslava1').checked },
+                        { text: 'Poučil som zákazníka, čo robiť v prípade dažďa, prípadne cez noc', checked: document.getElementById('oslava2').checked },
+                        { text: 'Mám podpísanú a vypísanú zmluvu (nezabudnúť údaje a podpis klienta)', checked: document.getElementById('oslava3').checked },
+                        { text: 'Mám peniaze prípadne voucher na zľavomat (peniaze beriem pred akciou)', checked: document.getElementById('oslava4').checked }
+                    ];
 
-            // Formátovanie maskotov
-            const maskotItems = [
-                { text: 'Jeden človek si oblieka len jeden kostým kvôli hygiene', checked: document.getElementById('maskot1').checked },
-                { text: 'Žiaden makeup', checked: document.getElementById('maskot2').checked },
-                { text: 'Nechodím bez hlavy. Hlavu si dávam dole až v šatni', checked: document.getElementById('maskot3').checked },
-                { text: 'V maskotovi kývem, tancujem, dávam ťap, objímam sa...', checked: document.getElementById('maskot4').checked },
-                { text: 'Nikdy nedvíham deti na ruky', checked: document.getElementById('maskot5').checked },
-                { text: 'Neber veci do ruky napr. torty atd.', checked: document.getElementById('maskot6').checked },
-                { text: 'V maskotovi nerozprávam', checked: document.getElementById('maskot7').checked },
-                { text: 'Neválam sa po zemi', checked: document.getElementById('maskot8').checked },
-                { text: 'Striedam sa 20 min idem a 10 min mám pauzu', checked: document.getElementById('maskot9').checked },
-                { text: 'Ak ste viac na akcii viacerí nemáte nikdy spolu prestávky stále musí byť aspoň jeden vonku', checked: document.getElementById('maskot10').checked },
-                { text: 'Topánky po akcii dám do čierneho sáčku až tak ho dám do mechu', checked: document.getElementById('maskot11').checked },
-                { text: 'Skontroloval som, či mám všetky časti maskota', checked: document.getElementById('maskot12').checked }
-            ];
+                    // Formátovanie pokladne
+                    const pokladnaItems = [
+                        { text: 'Som prihlásený na ZABAVKA s.r.o na pokladni/ terminále', checked: document.getElementById('pokladna1').checked },
+                        { text: 'Mám na pokladni nastavenú polohu', checked: document.getElementById('pokladna2').checked },
+                        { text: 'Sadzba DPH je 23%', checked: document.getElementById('pokladna3').checked },
+                        { text: 'Ak zákazník platí kartou tlačím bloček z pokladne aj z terminálu', checked: document.getElementById('pokladna4').checked },
+                        { text: 'Mám nalepené koľko stojí vstup na hrad', checked: document.getElementById('pokladna5').checked },
+                        { text: 'Mám nalepený papier o evidencii tržieb', checked: document.getElementById('pokladna6').checked },
+                        { text: 'Všetky deti/ dospelí, ktorí využívajú atrakcie majú na ruke pásku/ žetóny', checked: document.getElementById('pokladna7').checked }
+                    ];
 
-            // Vytvorenie prehľadného zoznamu pre email
-            let checklistHtml = '';
-            checklistItems.forEach(item => {
-                const icon = item.checked ? '✅' : '❌';
-                checklistHtml += `${icon} ${item.text}\n`;
-            });
+                    // Formátovanie maskotov
+                    const maskotItems = [
+                        { text: 'Jeden človek si oblieka len jeden kostým kvôli hygiene', checked: document.getElementById('maskot1').checked },
+                        { text: 'Žiaden makeup', checked: document.getElementById('maskot2').checked },
+                        { text: 'Nechodím bez hlavy. Hlavu si dávam dole až v šatni', checked: document.getElementById('maskot3').checked },
+                        { text: 'V maskotovi kývem, tancujem, dávam ťap, objímam sa...', checked: document.getElementById('maskot4').checked },
+                        { text: 'Nikdy nedvíham deti na ruky', checked: document.getElementById('maskot5').checked },
+                        { text: 'Neber veci do ruky napr. torty atd.', checked: document.getElementById('maskot6').checked },
+                        { text: 'V maskotovi nerozprávam', checked: document.getElementById('maskot7').checked },
+                        { text: 'Neválam sa po zemi', checked: document.getElementById('maskot8').checked },
+                        { text: 'Striedam sa 20 min idem a 10 min mám pauzu', checked: document.getElementById('maskot9').checked },
+                        { text: 'Ak ste viac na akcii viacerí nemáte nikdy spolu prestávky stále musí byť aspoň jeden vonku', checked: document.getElementById('maskot10').checked },
+                        { text: 'Topánky po akcii dám do čierneho sáčku až tak ho dám do mechu', checked: document.getElementById('maskot11').checked },
+                        { text: 'Skontroloval som, či mám všetky časti maskota', checked: document.getElementById('maskot12').checked }
+                    ];
 
-            let brigadnikHtml = '';
-            brigadnikItems.forEach(item => {
-                const icon = item.checked ? '✅' : '❌';
-                brigadnikHtml += `${icon} ${item.text}\n`;
-            });
+                    // Vytvorenie prehľadného zoznamu pre email
+                    let checklistHtml = '';
+                    checklistItems.forEach(item => {
+                        const icon = item.checked ? '✅' : '❌';
+                        checklistHtml += `${icon} ${item.text}\n`;
+                    });
 
-            let soferHtml = '';
-            soferItems.forEach(item => {
-                const icon = item.checked ? '✅' : '❌';
-                soferHtml += `${icon} ${item.text}\n`;
-            });
+                    let brigadnikHtml = '';
+                    brigadnikItems.forEach(item => {
+                        const icon = item.checked ? '✅' : '❌';
+                        brigadnikHtml += `${icon} ${item.text}\n`;
+                    });
 
-            let oslavaHtml = '';
-            oslavaItems.forEach(item => {
-                const icon = item.checked ? '✅' : '❌';
-                oslavaHtml += `${icon} ${item.text}\n`;
-            });
+                    let soferHtml = '';
+                    soferItems.forEach(item => {
+                        const icon = item.checked ? '✅' : '❌';
+                        soferHtml += `${icon} ${item.text}\n`;
+                    });
 
-            let pokladnaHtml = '';
-            pokladnaItems.forEach(item => {
-                const icon = item.checked ? '✅' : '❌';
-                pokladnaHtml += `${icon} ${item.text}\n`;
-            });
+                    let oslavaHtml = '';
+                    oslavaItems.forEach(item => {
+                        const icon = item.checked ? '✅' : '❌';
+                        oslavaHtml += `${icon} ${item.text}\n`;
+                    });
 
-            let maskotHtml = '';
-            maskotItems.forEach(item => {
-                const icon = item.checked ? '✅' : '❌';
-                maskotHtml += `${icon} ${item.text}\n`;
-            });
+                    let pokladnaHtml = '';
+                    pokladnaItems.forEach(item => {
+                        const icon = item.checked ? '✅' : '❌';
+                        pokladnaHtml += `${icon} ${item.text}\n`;
+                    });
 
-            // Parametre pre Google Sheets
-            const formData = {
-                cas_odoslania: casOdoslania,
-                datum: datum,
-                datum_upozornenie: datumUpozornenie,
-                nazov_akcie: nazovAkcie,
-                atrakcia: atrakcia,
-                meno_priezvisko: menoAPriezvisko,
-                druh_akcie: druhAkcie,
-                vstupne: vstupne,
-                checklist: checklistHtml,
-                brigadnik: brigadnikHtml,
-                sofer: soferHtml,
-                rodinne_oslavy: oslavaHtml,
-                pokladna: pokladnaHtml,
-                maskoti: maskotHtml,
-                objednavka_tricko: objednavkaTricko,
-                servis_dodavky: servisDodavky,
-                servis_atrakcie: servisAtrakcie,
-                cistenie_atrakcie: cistenieAtrakcie,
-                sprava_pre_sefku: spravaPreSefku
-            };
+                    let maskotHtml = '';
+                    maskotItems.forEach(item => {
+                        const icon = item.checked ? '✅' : '❌';
+                        maskotHtml += `${icon} ${item.text}\n`;
+                    });
 
-            // Odoslanie dát do Google Sheets
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify(formData)
-            })
-                .then(function() {
-                    // OKAMŽITE zobraz správu (bez čakania na test)
-                    successMessage.style.display = 'block';
-                    submitButton.classList.remove('loading');
-                    submitButton.innerHTML = '📋 Odoslať protokol';
+                    // Parametre pre Google Sheets
+                    const formData = {
+                        cas_odoslania: casOdoslania,
+                        datum: datum,
+                        datum_upozornenie: datumUpozornenie,
+                        nazov_akcie: nazovAkcie,
+                        atrakcia: atrakcia,
+                        meno_priezvisko: menoAPriezvisko,
+                        druh_akcie: druhAkcie,
+                        vstupne: vstupne,
+                        checklist: checklistHtml,
+                        brigadnik: brigadnikHtml,
+                        sofer: soferHtml,
+                        rodinne_oslavy: oslavaHtml,
+                        pokladna: pokladnaHtml,
+                        maskoti: maskotHtml,
+                        objednavka_tricko: objednavkaTricko,
+                        servis_dodavky: servisDodavky,
+                        servis_atrakcie: servisAtrakcie,
+                        cistenie_atrakcie: cistenieAtrakcie,
+                        sprava_pre_sefku: spravaPreSefku
+                    };
 
-                    // Reset formulára po 20 sekundách
-                    setTimeout(() => {
-                        successMessage.style.display = 'none';
-                        // Vyčistenie formulára
-                        document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
-                        document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
-                        document.getElementById('nazovAkcie').value = '';
-                        document.getElementById('atrakcia').value = '';
-                        document.getElementById('menoAPriezvisko').value = '';
-                        document.getElementById('objednavkaTricko').value = '';
-                        document.getElementById('servisDodavky').value = '';
-                        document.getElementById('servisAtrakcie').value = '';
-                        document.getElementById('cistenieAtrakcie').value = '';
-                        document.getElementById('spravaPreSefku').value = '';
-                        // Znovu nastaviť dnešný dátum
-                        const today = new Date();
-                        document.getElementById('datum').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
-                    }, 20000);
-                })
-                .catch(function(error) {
-                    // Zobrazenie chybovej správy
-                    errorMessage.style.display = 'block';
-                    submitButton.classList.remove('loading');
-                    submitButton.innerHTML = '📋 Odoslať protokol';
+                    // Odoslanie dát do Google Sheets
+                    fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(formData)
+                    })
+                        .then(function() {
+                            // OKAMŽITE zobraz správu (bez čakania na test)
+                            successMessage.style.display = 'block';
+                            submitButton.classList.remove('loading');
+                            submitButton.innerHTML = '📋 Odoslať protokol';
 
-                    // Skrytie chybovej správy po 20 sekundách
-                    setTimeout(() => {
-                        errorMessage.style.display = 'none';
-                    }, 20000);
+                            // Reset formulára po 20 sekundách
+                            setTimeout(() => {
+                                successMessage.style.display = 'none';
+                                // Vyčistenie formulára
+                                document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+                                document.querySelectorAll('input[type="radio"]').forEach(rb => rb.checked = false);
+                                document.getElementById('nazovAkcie').value = '';
+                                document.getElementById('atrakcia').value = '';
+                                document.getElementById('menoAPriezvisko').value = '';
+                                document.getElementById('objednavkaTricko').value = '';
+                                document.getElementById('servisDodavky').value = '';
+                                document.getElementById('servisAtrakcie').value = '';
+                                document.getElementById('cistenieAtrakcie').value = '';
+                                document.getElementById('spravaPreSefku').value = '';
+                                // Znovu nastaviť dnešný dátum
+                                const today = new Date();
+                                document.getElementById('datum').value = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`;
+                            }, 20000);
+                        })
+                        .catch(function(error) {
+                            // Zobrazenie chybovej správy
+                            errorMessage.style.display = 'block';
+                            submitButton.classList.remove('loading');
+                            submitButton.innerHTML = '📋 Odoslať protokol';
+
+                            // Skrytie chybovej správy po 20 sekundách
+                            setTimeout(() => {
+                                errorMessage.style.display = 'none';
+                            }, 20000);
                 });
+                } catch (error) {
+                    alert('CHYBA V JAVASCRIPTE: ' + error.message);
+                }
             });
         });
     </script>
