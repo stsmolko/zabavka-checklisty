@@ -1,58 +1,53 @@
-// Google Apps Script pre Zabavka Checklist
-// Tento kód skopíruj do Google Sheets -> Extensions -> Apps Script
+// ==============================================
+// ZABAVKA CHECKLIST - GOOGLE APPS SCRIPT
+// ==============================================
+// Tento skript spracováva dáta z formulára a odosiela emaily
 
-// Funkcia pre GET požiadavky (potrebná pre Web App)
-function doGet(e) {
-  return ContentService.createTextOutput(JSON.stringify({
-    'status': 'success',
-    'message': 'Zabavka Checklist API je aktívne'
-  })).setMimeType(ContentService.MimeType.JSON);
+function doGet() {
+  return ContentService.createTextOutput('Zabavka Checklist API je aktívne! ✅').setMimeType(ContentService.MimeType.TEXT);
 }
 
-// Funkcia pre POST požiadavky (odosielanie formulára)
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    // Získanie dát z POST requestu
+    const data = JSON.parse(e.postData.contents);
     
-    // Ak je sheet prázdny, pridaj hlavičky
+    // Získanie aktívneho sheetu
+    const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+    
+    // Vytvorenie hlavičky ak ešte neexistuje
     if (sheet.getLastRow() === 0) {
-      sheet.appendRow([
-        'Čas odoslania',
-        'Dátum',
-        'Názov akcie',
-        'Atrakcia',
-        'Meno a priezvisko',
-        'Druh akcie',
-        'Vstupné',
-        'Kontrola atrakcie',
-        'Kontrola brigádnik',
-        'Kontrola šofér',
-        'Rodinné oslavy',
-        'Pokladňa',
-        'Objednávka tričko',
-        'Servis dodávky',
-        'Servis atrakcie',
-        'Čistenie atrakcie',
-        'Správa pre šéfka'
-      ]);
+      const headers = [
+        'Čas odoslania', 'Dátum', 'Dátumové upozornenie', 'Názov akcie', 'Atrakcia', 
+        'Meno a priezvisko', 'Email zamestnanca', 'Druh akcie', 'Vstupné', 
+        'Kontrola atrakcie', 'Kontrola brigádnik', 'Kontrola šofér', 
+        'Rodinné oslavy', 'Pokladňa', 'Maskoti', 
+        'Objednávka tričko', 'Servis dodávky', 'Servis atrakcie', 
+        'Čistenie atrakcie', 'Správa pre šéfku'
+      ];
       
-      // Naformátuj hlavičky
-      var headerRange = sheet.getRange(1, 1, 1, 17);
+      const headerRange = sheet.getRange(1, 1, 1, 20);
+      headerRange.setValues([headers]);
       headerRange.setFontWeight('bold');
       headerRange.setBackground('#b4ff00');
       headerRange.setFontColor('#000000');
+      
+      // Nastavenie zarovnania a wrap pre všetky stĺpce
+      const allRange = sheet.getRange(1, 1, 1000, 20);
+      allRange.setVerticalAlignment('top');
+      allRange.setHorizontalAlignment('left');
+      allRange.setWrap(true);
     }
     
-    // Parsuj JSON data
-    var data = JSON.parse(e.postData.contents);
-    
-    // Pridaj nový riadok s dátami
+    // Pridanie nového riadku s dátami
     sheet.appendRow([
-      data.cas_odoslania || new Date().toLocaleString('sk-SK'),
+      data.cas_odoslania || '',
       data.datum || '',
+      data.datum_upozornenie || '',
       data.nazov_akcie || '',
       data.atrakcia || '',
       data.meno_priezvisko || '',
+      data.email_zamestnanca || '',
       data.druh_akcie || '',
       data.vstupne || '',
       data.checklist || '',
@@ -60,6 +55,7 @@ function doPost(e) {
       data.sofer || '',
       data.rodinne_oslavy || '',
       data.pokladna || '',
+      data.maskoti || '',
       data.objednavka_tricko || '',
       data.servis_dodavky || '',
       data.servis_atrakcie || '',
@@ -67,120 +63,249 @@ function doPost(e) {
       data.sprava_pre_sefku || ''
     ]);
     
-    // Pošli email notifikáciu (voliteľné)
-    sendEmailNotification(data);
-    
-    // Vráť úspešnú odpoveď
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'success',
-      'message': 'Dáta boli úspešne uložené'
-    })).setMimeType(ContentService.MimeType.JSON);
-    
-  } catch (error) {
-    // Vráť chybovú odpoveď
-    return ContentService.createTextOutput(JSON.stringify({
-      'status': 'error',
-      'message': error.toString()
-    })).setMimeType(ContentService.MimeType.JSON);
-  }
-}
-
-// Funkcia na odoslanie email notifikácie
-function sendEmailNotification(data) {
-  // NASTAV SVOJ EMAIL TU:
-  var emailAddress = 'tvoj-email@example.com'; // <-- ZMEŇ NA SVOJ EMAIL
-  
-  var subject = '✅ Nový Zabavka Checklist: ' + (data.meno_priezvisko || 'Neznámy');
-  
-  var body = '🎉 Nový checklist bol odoslaný!\n\n';
-  body += '📅 Dátum: ' + (data.datum || '') + '\n';
-  body += '📍 Akcia: ' + (data.nazov_akcie || '') + '\n';
-  body += '🎪 Atrakcia: ' + (data.atrakcia || '') + '\n';
-  body += '👤 Meno: ' + (data.meno_priezvisko || '') + '\n';
-  body += '🎭 Druh akcie: ' + (data.druh_akcie || '') + '\n';
-  body += '💰 Vstupné: ' + (data.vstupne || '') + '\n\n';
-  
-  body += '═══════════════════════════════\n';
-  body += '🏰 KONTROLA ATRAKCIE:\n';
-  body += '═══════════════════════════════\n';
-  body += (data.checklist || 'Nevyplnené') + '\n\n';
-  
-  body += '═══════════════════════════════\n';
-  body += '👷 KONTROLA BRIGÁDNIK:\n';
-  body += '═══════════════════════════════\n';
-  body += (data.brigadnik || 'Nevyplnené') + '\n\n';
-  
-  body += '═══════════════════════════════\n';
-  body += '🚗 KONTROLA ŠOFÉR:\n';
-  body += '═══════════════════════════════\n';
-  body += (data.sofer || 'Nevyplnené') + '\n\n';
-  
-  if (data.rodinne_oslavy) {
-    body += '═══════════════════════════════\n';
-    body += '🎂 RODINNÉ OSLAVY:\n';
-    body += '═══════════════════════════════\n';
-    body += data.rodinne_oslavy + '\n\n';
-  }
-  
-  if (data.pokladna) {
-    body += '═══════════════════════════════\n';
-    body += '💵 POKLADŇA:\n';
-    body += '═══════════════════════════════\n';
-    body += data.pokladna + '\n\n';
-  }
-  
-  if (data.objednavka_tricko) {
-    body += '👕 OBJEDNÁVKA TRIČKO: ' + data.objednavka_tricko + '\n\n';
-  }
-  
-  if (data.servis_dodavky) {
-    body += '🔧 SERVIS DODÁVKY: ' + data.servis_dodavky + '\n\n';
-  }
-  
-  if (data.servis_atrakcie) {
-    body += '🔧 SERVIS ATRAKCIE: ' + data.servis_atrakcie + '\n\n';
-  }
-  
-  if (data.cistenie_atrakcie) {
-    body += '🧹 ČISTENIE ATRAKCIE: ' + data.cistenie_atrakcie + '\n\n';
-  }
-  
-  if (data.sprava_pre_sefku) {
-    body += '═══════════════════════════════\n';
-    body += '💬 SPRÁVA PRE ŠÉFKU:\n';
-    body += '═══════════════════════════════\n';
-    body += data.sprava_pre_sefku + '\n\n';
-  }
-  
-  body += '\n⏰ Odoslané: ' + (data.cas_odoslania || new Date().toLocaleString('sk-SK'));
-  body += '\n\n--\nZabavka Checklist System';
-  
-  try {
-    MailApp.sendEmail(emailAddress, subject, body);
-  } catch (error) {
-    Logger.log('Chyba pri posielaní emailu: ' + error.toString());
-  }
-}
-
-// Testovacia funkcia
-function test() {
-  var testData = {
-    datum: '2024-01-15',
-    nazov_akcie: 'Testovacia akcia',
-    atrakcia: 'Skákací hrad',
-    meno_priezvisko: 'Ján Novák',
-    druh_akcie: 'Rodinná oslava',
-    vstupne: 'Nie',
-    checklist: '✅ Test 1\n✅ Test 2',
-    cas_odoslania: new Date().toLocaleString('sk-SK')
-  };
-  
-  var e = {
-    postData: {
-      contents: JSON.stringify(testData)
+    // Zvýraznenie bunky s dátumovým upozornením ak existuje
+    if (data.datum_upozornenie && data.datum_upozornenie.length > 0) {
+      const lastRow = sheet.getLastRow();
+      const upozornenieCell = sheet.getRange(lastRow, 3); // Stĺpec C
+      upozornenieCell.setBackground('#ff4757');
+      upozornenieCell.setFontColor('#ffffff');
+      upozornenieCell.setFontWeight('bold');
     }
+    
+    // Odoslanie emailov
+    posliEmail(data);
+    
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'success',
+      message: 'Dáta boli úspešne uložené'
+    })).setMimeType(ContentService.MimeType.JSON);
+    
+  } catch (error) {
+    Logger.log('Chyba: ' + error.toString());
+    return ContentService.createTextOutput(JSON.stringify({
+      status: 'error',
+      message: error.toString()
+    })).setMimeType(ContentService.MimeType.JSON);
+  }
+}
+
+function posliEmail(data) {
+  try {
+    // Emailové adresy
+    const emailSefka = 'kontrola@zabavka.sk';
+    const emailZamestnanec = data.email_zamestnanca || '';
+    const emailAdmin = 'stsmolko@gmail.com';
+    const emailServis = 'dusan.onody2@gmail.com';
+    
+    // Vytvorenie tela emailu pre šéfku
+    let emailBody = '📋 NOVÝ CHECKLIST OD ZAMESTNANCA\n\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += 'ZÁKLADNÉ INFORMÁCIE\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += '⏰ Čas odoslania: ' + (data.cas_odoslania || '') + '\n';
+    emailBody += '📅 Dátum: ' + (data.datum || '') + '\n';
+    
+    if (data.datum_upozornenie && data.datum_upozornenie.length > 0) {
+      emailBody += '\n⚠️ ' + data.datum_upozornenie + '\n';
+    }
+    
+    emailBody += '📍 Názov akcie: ' + (data.nazov_akcie || '') + '\n';
+    emailBody += '🎪 Atrakcia: ' + (data.atrakcia || '') + '\n';
+    emailBody += '👤 Meno: ' + (data.meno_priezvisko || '') + '\n';
+    emailBody += '📧 Email: ' + (data.email_zamestnanca || '') + '\n';
+    emailBody += '🎯 Druh akcie: ' + (data.druh_akcie || '') + '\n';
+    emailBody += '💰 Vstupné: ' + (data.vstupne || '') + '\n\n';
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += '✅ KONTROLA ATRAKCIE\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += data.checklist || 'Nevyplnené\n';
+    emailBody += '\n';
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += '👷 KONTROLA BRIGÁDNIK\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += data.brigadnik || 'Nevyplnené\n';
+    emailBody += '\n';
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += '🚗 KONTROLA ŠOFÉR\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += data.sofer || 'Nevyplnené\n';
+    emailBody += '\n';
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += '🎉 RODINNÉ OSLAVY\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += data.rodinne_oslavy || 'Nevyplnené\n';
+    emailBody += '\n';
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += '💵 POKLADŇA\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += data.pokladna || 'Nevyplnené\n';
+    emailBody += '\n';
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += '🎭 MASKOTI\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    emailBody += data.maskoti || 'Nevyplnené\n';
+    emailBody += '\n';
+    
+    if (data.objednavka_tricko && data.objednavka_tricko.trim().length > 0) {
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      emailBody += '👕 OBJEDNÁVKA TRIČKO\n';
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      emailBody += data.objednavka_tricko + '\n\n';
+    }
+    
+    if (data.servis_dodavky && data.servis_dodavky.trim().length > 0) {
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      emailBody += '🔧 SERVIS DODÁVKY\n';
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      emailBody += data.servis_dodavky + '\n\n';
+    }
+    
+    if (data.servis_atrakcie && data.servis_atrakcie.trim().length > 0) {
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      emailBody += '🔧 SERVIS ATRAKCIE\n';
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      emailBody += data.servis_atrakcie + '\n\n';
+    }
+    
+    if (data.cistenie_atrakcie && data.cistenie_atrakcie.trim().length > 0) {
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      emailBody += '🧹 ČISTENIE ATRAKCIE\n';
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      emailBody += data.cistenie_atrakcie + '\n\n';
+    }
+    
+    if (data.sprava_pre_sefku && data.sprava_pre_sefku.trim().length > 0) {
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      emailBody += '💬 SPRÁVA PRE ŠÉFKU\n';
+      emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      emailBody += data.sprava_pre_sefku + '\n\n';
+    }
+    
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    emailBody += 'Koniec reportu\n';
+    emailBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    
+    // Odoslanie emailu šéfke
+    MailApp.sendEmail({
+      to: emailSefka,
+      subject: '📋 Nový checklist: ' + (data.nazov_akcie || 'Bez názvu') + ' - ' + (data.meno_priezvisko || ''),
+      body: emailBody
+    });
+    
+    // Odoslanie potvrdzovacieho emailu zamestnancovi
+    if (emailZamestnanec && emailZamestnanec.length > 0) {
+      let confirmBody = 'Ahoj ' + (data.meno_priezvisko || '') + '! 👋\n\n';
+      confirmBody += '✅ Tvoj checklist bol úspešne odoslaný!\n\n';
+      confirmBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      confirmBody += 'Základné informácie:\n';
+      confirmBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      confirmBody += '⏰ Čas odoslania: ' + (data.cas_odoslania || '') + '\n';
+      confirmBody += '📅 Dátum: ' + (data.datum || '') + '\n';
+      
+      if (data.datum_upozornenie && data.datum_upozornenie.length > 0) {
+        confirmBody += '\n⚠️ ' + data.datum_upozornenie + '\n';
+      }
+      
+      confirmBody += '📍 Akcia: ' + (data.nazov_akcie || '') + '\n';
+      confirmBody += '🎪 Atrakcia: ' + (data.atrakcia || '') + '\n\n';
+      confirmBody += 'Ďakujeme za vyplnenie checklistu! 🎉\n\n';
+      confirmBody += 'Tím Zabavka.sk';
+      
+      MailApp.sendEmail({
+        to: emailZamestnanec,
+        subject: '✅ Potvrdenie: Checklist bol úspešne odoslaný',
+        body: confirmBody
+      });
+    }
+    
+    // Odoslanie anonymnej správy adminovi
+    if (data.sprava_pre_sefku && data.sprava_pre_sefku.trim().length > 0) {
+      let adminBody = '💬 ANONYMNÁ SPRÁVA OD ZAMESTNANCA\n\n';
+      adminBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+      adminBody += data.sprava_pre_sefku + '\n\n';
+      adminBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+      adminBody += 'Táto správa bola odoslaná anonymne z checklistu.\n';
+      adminBody += 'Dátum: ' + (data.datum || '') + '\n';
+      adminBody += 'Čas: ' + (data.cas_odoslania || '');
+      
+      MailApp.sendEmail({
+        to: emailAdmin,
+        subject: '💬 Anonymná správa od zamestnanca',
+        body: adminBody
+      });
+    }
+    
+    // Odoslanie servisných hlásení
+    let maServis = false;
+    let servisBody = '🔧 SERVISNÉ HLÁSENIE\n\n';
+    servisBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n';
+    servisBody += 'Od: ' + (data.meno_priezvisko || '') + '\n';
+    servisBody += 'Akcia: ' + (data.nazov_akcie || '') + '\n';
+    servisBody += 'Atrakcia: ' + (data.atrakcia || '') + '\n';
+    servisBody += 'Dátum: ' + (data.datum || '') + '\n';
+    servisBody += '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━\n\n';
+    
+    if (data.servis_dodavky && data.servis_dodavky.trim().length > 0) {
+      servisBody += '🚗 SERVIS DODÁVKY:\n' + data.servis_dodavky + '\n\n';
+      maServis = true;
+    }
+    
+    if (data.servis_atrakcie && data.servis_atrakcie.trim().length > 0) {
+      servisBody += '🎪 SERVIS ATRAKCIE:\n' + data.servis_atrakcie + '\n\n';
+      maServis = true;
+    }
+    
+    if (data.cistenie_atrakcie && data.cistenie_atrakcie.trim().length > 0) {
+      servisBody += '🧹 ČISTENIE ATRAKCIE:\n' + data.cistenie_atrakcie + '\n\n';
+      maServis = true;
+    }
+    
+    if (maServis) {
+      MailApp.sendEmail({
+        to: emailServis,
+        subject: '🔧 Servisné hlásenie: ' + (data.atrakcia || 'Bez názvu'),
+        body: servisBody
+      });
+    }
+    
+    Logger.log('Emaily úspešne odoslané');
+    
+  } catch (error) {
+    Logger.log('Chyba pri odosielaní emailov: ' + error.toString());
+  }
+}
+
+// Testovacia funkcia pre odosielanie emailov
+function testEmail() {
+  const testData = {
+    cas_odoslania: '14:30:00',
+    datum: '12.02.2026',
+    datum_upozornenie: '⚠️ ROZDIELNY DÁTUM! Dátum v úvode: 11.02.2026, Dátum odoslania: 12.02.2026',
+    nazov_akcie: 'Detský deň v Bratislave',
+    atrakcia: 'Hrad Angry Birds',
+    meno_priezvisko: 'Ján Testovací',
+    email_zamestnanca: 'test@zabavka.sk',
+    druh_akcie: 'Obecná/mestská akcia',
+    vstupne: 'Áno',
+    checklist: '✅ Atrakcia je prikotvená k zemi\n✅ Atrakcia má prevádzkový poriadok\n❌ Koberček nie je položený',
+    brigadnik: '✅ Mám zabavka tričko\n✅ Mám pevnú obuv\n✅ Nefajčím',
+    sofer: '✅ Mám odfotené vozidlo pred\n✅ Skladový lístok vyplnený',
+    rodinne_oslavy: '',
+    pokladna: '',
+    maskoti: '',
+    objednavka_tricko: 'Ján Novák, veľkosť L',
+    servis_dodavky: 'Pravé spätné zrkadlo je uvoľnené',
+    servis_atrakcie: 'Kompresor má divný zvuk',
+    cistenie_atrakcie: 'Šmykľavka je špinavá od blatá',
+    sprava_pre_sefku: 'Bolo by super keby sme mali viac času na prípravu atrakcií. Niekedy je to veľmi narýchlo.'
   };
   
-  var response = doPost(e);
-  Logger.log(response.getContent());
+  posliEmail(testData);
+  Logger.log('Test email odoslaný');
 }
